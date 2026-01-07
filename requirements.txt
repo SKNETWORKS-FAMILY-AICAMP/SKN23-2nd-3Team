@@ -1,0 +1,9 @@
+streamlit
+pandas
+requests
+pymysql
+python-dotenv
+openpyxl
+plotly
+pydeck
+streamlit_option_menu
