@@ -7,3 +7,6 @@ openpyxl
 plotly
 pydeck
 streamlit_option_menu
+pyyaml
+scikit-learn
+joblib
