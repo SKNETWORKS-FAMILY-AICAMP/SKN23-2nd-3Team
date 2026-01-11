@@ -13,8 +13,6 @@
     "price_volatility",
     "n_events_7d",
     "visit_regularity",
-    "activity_trend",
-    "home_brand",
-    "future_brand"
+    "activity_trend"
   ]
 }
