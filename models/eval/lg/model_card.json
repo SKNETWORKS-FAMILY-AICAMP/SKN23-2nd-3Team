@@ -1,0 +1,18 @@
+{
+  "model_type": "LogisticRegression(sklearn)",
+  "task": "binary classification (dormant=1 vs non-dormant=0)",
+  "n_features": 16,
+  "data_paths": {
+    "labels": "C:\\SKNfolder\\SKN23-2nd-3Team\\data\\processed\\labels.parquet",
+    "anchors": "C:\\SKNfolder\\SKN23-2nd-3Team\\data\\processed\\anchors.parquet",
+    "features": "C:\\SKNfolder\\SKN23-2nd-3Team\\data\\processed\\features_ml_clean.parquet"
+  },
+  "eval_split": "test",
+  "k_list": [
+    5,
+    10,
+    15,
+    20,
+    30
+  ]
+}
