@@ -38,6 +38,7 @@ def hide_sidebar():
     <style>
     [data-testid="stSidebar"] {
         display: none;
+        opacity: 0;
     }
     </style>
     """, unsafe_allow_html=True)

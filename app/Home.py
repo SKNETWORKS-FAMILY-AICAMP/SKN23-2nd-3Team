@@ -242,12 +242,12 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ===================== 메인 레이아웃 (원래 구조 유지) =====================
-st.markdown('<div class="main-title">⚡ E-commerce Churn</div>', unsafe_allow_html=True)
+st.markdown('<div class="main-title">⚡ E-commerce Churn Prediction</div>', unsafe_allow_html=True)
 main1, spacer, main2 = st.columns([1, 0.1, 1])
 
 # ========== 왼쪽: 네비게이션 카드 ==========
 with main1:
-    # st.markdown('<div class="main-title">⚡ E-commerce Churn</div>', unsafe_allow_html=True)
+    # st.markdown('<div class="main-title">⚡ E-commrce Churn</div>', unsafe_allow_html=True)
 
     # 첫 번째 행
     col1, col2 = st.columns(2)
@@ -260,7 +260,7 @@ with main1:
             <div class="card-desc">프로젝트 개요</div>
         </div>
         """, unsafe_allow_html=True)
-        if st.button("📈 Overview", use_container_width=True, key="btn1"):
+        if st.button("Overview", use_container_width=True, key="btn1"):
             st.switch_page("pages/1_Overview.py")
 
     with col2:
@@ -271,7 +271,7 @@ with main1:
             <div class="card-desc">모델 학습 & 평가</div>
         </div>
         """, unsafe_allow_html=True)
-        if st.button("🤖 Model", use_container_width=True, key="btn2"):
+        if st.button("Model", use_container_width=True, key="btn2"):
             st.switch_page("pages/2_Model_Compare.py")
 
     # 두 번째 행
@@ -285,7 +285,7 @@ with main1:
             <div class="card-desc">결과 분석 리포트</div>
         </div>
         """, unsafe_allow_html=True)
-        if st.button("📊 Analysis", use_container_width=True, key="btn3"):
+        if st.button("Analysis", use_container_width=True, key="btn3"):
             st.switch_page("pages/3_Report_Download.py")
 
     with col4:
@@ -296,7 +296,7 @@ with main1:
             <div class="card-desc">질의응답</div>
         </div>
         """, unsafe_allow_html=True)
-        if st.button("✔️ Q&A", use_container_width=True, key="btn4"):
+        if st.button("Q&A", use_container_width=True, key="btn4"):
             st.switch_page("pages/4_FAQ_QnA.py")
 
 # ========== 오른쪽: 대시보드 ==========
