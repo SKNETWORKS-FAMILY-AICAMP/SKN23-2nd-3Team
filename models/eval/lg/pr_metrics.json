@@ -1,0 +1,5 @@
+{
+  "model_id": "ml__logreg_lg",
+  "split": "test",
+  "pr_auc": 0.9297780014360004
+}

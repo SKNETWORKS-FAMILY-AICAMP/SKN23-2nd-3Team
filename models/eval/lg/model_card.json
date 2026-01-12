@@ -1,0 +1,6 @@
+{
+  "model_id": "ml__logreg_lg",
+  "display_name": "LogReg(LG)",
+  "category": "ML",
+  "split": "test"
+}

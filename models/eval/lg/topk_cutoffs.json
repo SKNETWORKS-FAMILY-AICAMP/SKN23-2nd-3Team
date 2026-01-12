@@ -1,0 +1,29 @@
+{
+  "model_id": "ml__logreg_lg",
+  "split": "test",
+  "n_total": 101833,
+  "n_selected_rule": "floor",
+  "tie_policy": "sort_and_take_top_n",
+  "cutoffs_by_k": [
+    {
+      "k_pct": 5,
+      "n_selected": 5091,
+      "t_k": 0.9335009351694221
+    },
+    {
+      "k_pct": 10,
+      "n_selected": 10183,
+      "t_k": 0.9246928803948052
+    },
+    {
+      "k_pct": 15,
+      "n_selected": 15274,
+      "t_k": 0.9165731382020761
+    },
+    {
+      "k_pct": 30,
+      "n_selected": 30549,
+      "t_k": 0.8894253339990891
+    }
+  ]
+}
