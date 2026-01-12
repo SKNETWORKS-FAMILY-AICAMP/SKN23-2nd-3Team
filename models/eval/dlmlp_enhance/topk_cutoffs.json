@@ -1,0 +1,29 @@
+{
+  "model_id": "dl__mlp_enhance",
+  "split": "test",
+  "n_total": 162708,
+  "n_selected_rule": "floor",
+  "tie_policy": "sort_and_take_top_n",
+  "cutoffs_by_k": [
+    {
+      "k_pct": 5,
+      "n_selected": 8135,
+      "t_k": 0.7541974782943726
+    },
+    {
+      "k_pct": 10,
+      "n_selected": 16270,
+      "t_k": 0.728177547454834
+    },
+    {
+      "k_pct": 15,
+      "n_selected": 24406,
+      "t_k": 0.7003880739212036
+    },
+    {
+      "k_pct": 30,
+      "n_selected": 48812,
+      "t_k": 0.654221773147583
+    }
+  ]
+}
