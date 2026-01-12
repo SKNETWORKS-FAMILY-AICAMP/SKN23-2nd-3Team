@@ -52,7 +52,7 @@ st.set_page_config(page_title="Overview", layout="wide")
 # Challenge Section
 st.markdown("""
 <div class="section-title">
-    🚨 Challenge
+    Challenge
 </div>
 """, unsafe_allow_html=True)
 st.markdown("<br>", unsafe_allow_html=True)
@@ -106,7 +106,7 @@ solution, _, impact = st.columns([1,0.05,1])
 with solution:
     st.markdown("""
     <div class="section-title">
-        ✅ Solution
+        Solution
     </div>
     """, unsafe_allow_html=True)
     st.markdown("<br>", unsafe_allow_html=True)
@@ -160,7 +160,7 @@ with solution:
 with impact:
     st.markdown("""
     <div class="section-title">
-        🏆 Impact
+        Impact
     </div>
     """, unsafe_allow_html=True)
     st.markdown("<br>", unsafe_allow_html=True)
