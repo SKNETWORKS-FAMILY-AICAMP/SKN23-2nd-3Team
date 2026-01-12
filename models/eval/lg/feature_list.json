@@ -1,0 +1,18 @@
+{
+  "features": [
+    "n_events_30d",
+    "active_days_30d",
+    "n_purchase_30d",
+    "purchase_ratio",
+    "days_since_last_event",
+    "days_since_last_purchase",
+    "brand_concentration_ratio",
+    "brand_switch_count_30d",
+    "total_spend_30d",
+    "activity_ratio_15d",
+    "price_volatility",
+    "n_events_7d",
+    "visit_regularity",
+    "activity_trend"
+  ]
+}
