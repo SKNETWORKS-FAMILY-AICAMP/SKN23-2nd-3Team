@@ -2,7 +2,7 @@ import streamlit as st
 # ===== util 파일 불러오기 =======
 from utils.ui import apply_base_layout, hide_sidebar, top_nav, QnA_ui
 
-st.set_page_config(layout="wide", page_title="FAQ - REVIVE")
+st.set_page_config(layout="wide", page_title="FAQ_QnA")
 
 # UI 유틸리티 적용
 apply_base_layout()
@@ -43,7 +43,7 @@ st.markdown("""
 # </div>
 # """, unsafe_allow_html=True)
 
-st.markdown("# Q&A")
+st.markdown("# ❓ QnA")
 
 # ===== 검색 기능 ======
 st.markdown('<div class="search-container">', unsafe_allow_html=True)

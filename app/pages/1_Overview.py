@@ -28,7 +28,7 @@ st.markdown("""
 
     /* 3. 네비게이션 바와 본문 사이의 쓸데없는 간격 제거 */
     div[data-testid="stVerticalBlock"] {
-        gap: 0.3rem !important;
+        gap: 0.5rem !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -44,6 +44,10 @@ import streamlit as st
 # 페이지 설정
 st.set_page_config(page_title="Overview", layout="wide")
 
+# 제목 넣음
+# st.markdown("<br>", unsafe_allow_html=True)
+# st.markdown("# Overview")
+# st.markdown("---")
 
 # Challenge Section
 st.markdown("""
@@ -218,6 +222,8 @@ with impact:
         }
     </style>
     """, unsafe_allow_html=True)
+
+    st.markdown("<br>", unsafe_allow_html=True)
 
     # HTML 한 덩어리로 렌더링 (st.columns 제거)
     st.markdown("""
