@@ -1,30 +1,46 @@
 import json
-import os
 from app.utils.paths import PATHS
 
 
-def load_metrics(model_name):
+def load_runtime_metrics(model_name: str, version: str):
     """
-    특정 모델의 성능 지표 JSON 파일을 불러옵니다.
-
-    Args:
-        model_name (str): 모델 이름 (예: 'mlp_enhance').
-
-    Returns:
-        dict: 성능 지표가 담긴 딕셔너리.
-
-    Raises:
-        FileNotFoundError: 지표 파일이 존재하지 않을 경우 발생합니다.
-
-    사용 예시:
-        >>> metrics = load_metrics("mlp_enhance")
+    실험/실시간 단계에서 저장한 metrics.json 로드
+    models/metrics/{model_name}_{version}_metrics.json
     """
-    metrics_path = os.path.join(PATHS.METRICS, f"{model_name}_metrics.json")
+    metrics_path = PATHS["models_metrics"] / f"{model_name}_{version}_metrics.json"
 
-    if not os.path.exists(metrics_path):
-        raise FileNotFoundError(f"지표 파일을 찾을 수 없습니다: {metrics_path}")
+    if not metrics_path.exists():
+        raise FileNotFoundError(f"metrics 파일이 없습니다: {metrics_path}")
 
-    with open(metrics_path, "r", encoding="utf-8") as f:
-        metrics = json.load(f)
+    with open(metrics_path, "r") as f:
+        return json.load(f)
 
-    return metrics
+
+def load_eval_metrics(model_id: str):
+    """
+    eval 단계 팀 공통 규칙 metrics 로드
+    models/eval/<model_id>/
+    """
+    eval_dir = PATHS["models_eval"] / model_id
+
+    if not eval_dir.exists():
+        raise FileNotFoundError(f"eval 폴더가 없습니다: {eval_dir}")
+
+    with open(eval_dir / "model_card.json") as f:
+        model_card = json.load(f)
+
+    with open(eval_dir / "pr_metrics.json") as f:
+        pr_metrics = json.load(f)
+
+    with open(eval_dir / "topk_metrics.json") as f:
+        topk_metrics = json.load(f)
+
+    with open(eval_dir / "topk_cutoffs.json") as f:
+        topk_cutoffs = json.load(f)
+
+    return {
+        "model_card": model_card,
+        "pr_metrics": pr_metrics,
+        "topk_metrics": topk_metrics,
+        "topk_cutoffs": topk_cutoffs,
+    }
