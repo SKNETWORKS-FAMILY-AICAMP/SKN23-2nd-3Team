@@ -324,7 +324,7 @@ def overview_ui():
         .metrics-box {
             background-color: #f9fafb;
             border-radius: 10px;
-            padding: 10px 15px; /* 상하 패딩을 줄여서 높이 축소 */
+            padding: 10px 35px; /* 상하 패딩을 줄여서 높이 축소 */
             border: 1px solid #f3f4f6;
             margin-top: 0px;
         }

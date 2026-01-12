@@ -19,7 +19,7 @@ import plotly.graph_objects as go
 # --------------------------------------------------------------------------------
 # 1. 페이지 설정 및 스타일
 # --------------------------------------------------------------------------------
-st.set_page_config(page_title="Action & Report", page_icon="🚀", layout="wide")
+st.set_page_config(page_title="Report", page_icon="🚀", layout="wide")
 st.markdown("""
 <style>
     /* 1. 최상단 여백 제거 (네비바가 들어갈 공간 확보) */
@@ -158,7 +158,7 @@ with col2:
     <div class="kpi-card">
         <div class="kpi-title">📈 예상 마케팅 효율 (Lift)</div>
         <div class="kpi-value-sub">{lift_value:.1f} x</div>
-        <div class="kpi-note">랜덤 타겟팅 대비 효율</div>
+        <div class="kpi-note">랜덤 타겟팅 대비 효율<br><br></div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -168,7 +168,7 @@ with col3:
     <div class="kpi-card">
         <div class="kpi-title">🛡️ 이탈 방어 기대 효과</div>
         <div class="kpi-value-sub">≈ {expected_save:,} 명</div>
-        <div class="kpi-note">방어율 15% 가정 시</div>
+        <div class="kpi-note">방어율 15% 가정 시<br><br></div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -181,7 +181,7 @@ col_action, col_preview = st.columns([1.5, 2])
 
 with col_action:
     # 액션 박스
-    st.markdown('<div class="action-area">', unsafe_allow_html=True)
+    # st.markdown('<div class="action-area">', unsafe_allow_html=True)
     st.markdown("#### 🎁 쿠폰 일괄 발송")
     st.write(f"대상: **{target_count:,}명**")
     
