@@ -193,7 +193,9 @@ pip-selfcheck.json
 *.parquet
 *.csv
 *.tsv
+*.DS_Store
 .DS_Store
 
 
 # End of https://www.toptal.com/developers/gitignore/api/python,venv.DS_Store
+.DS_Store
