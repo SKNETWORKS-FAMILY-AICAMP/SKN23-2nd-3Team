@@ -89,8 +89,8 @@ with col3:
         <div class="icon-box icon-box-yellow">🎯</div>
         <div class="card-title">클래스 불균형</div>
         <div class="card-text">
-            전체 데이터 중 실제 휴면 고객(m2)은 18.5%에 불과해 
-            정확한 예측이 어려운 상황입니다.
+            전체 데이터 중 실제 휴면 고객(m2)은 87%에 불과해 
+            정확한 예측이 너무 잘되는 상황입니다.
             <br>
         </div>
     </div>
