@@ -9,8 +9,8 @@
 | ^^  | ^^  | ^^  | ^^  | ^^ |
 | :-:  | :-:  | :-:  | :-:  | :-:  |
 | **정석원** | **김다빈** | **김지우** | **송주엽** | **신승훈** |
-| 팀장/PM/ML | 팀원/Dev| 팀원/ML | 팀원/ML | 팀원/Dev  |
-| 내용 | 내용 | 내용 | 내용 | 내용 |
+| 팀장/PM/ML | 팀원/DL| 팀원/ML | 팀원/ML | 팀원/Dev  |
+| - 문제정의/라벨/스플릿 설계  <br> - 공통 평가 지표/리더보드 운영 <br>  ML 담당 <br> 발표| DL 파이프라인/학습 코드 <br> | 내용 | 내용 | 내용 |
 | <a href="https://github.com/jsrop07"><img src="https://img.shields.io/badge/GitHub-jsrop07-pink?logo=github"></a> | <a href="https://github.com/tree0317"><img src="https://img.shields.io/badge/GitHub-tree0317-red?logo=github"></a> | <a href="https://github.com/jooooww"><img src="https://img.shields.io/badge/GitHub-jooooww-blue?logo=github"></a> | <a href="https://github.com/JUYEOP024"><img src="https://img.shields.io/badge/GitHub-JUYEOP024-black?logo=github"></a> | <a href="https://github.com/seunghun92-lab"><img src="https://img.shields.io/badge/GitHub-seunghun92--lab-white?logo=github"></a> | 
 
 
@@ -18,62 +18,111 @@
 ## 📄 프로젝트 개요 (Overview)
 
 ### ✦ 프로젝트명
-> 🛒 전자상거래 로그 기반 고객 상태 예측 및 타겟팅 최적화 모델링
+> 🛒 전자상거래 로그 기반 고객 이탈 예측 및 타겟팅 최적화 모델링
 
 ### ✦ 프로젝트 기간
-
-
 > 2026.01.14(수) ~ 2026.01.16(금)
 
 
 ### ✦ 프로젝트 소개
-본 프로젝트는 약 **378만 건**의 전자상거래 이벤트 로그를 기반으로,  
-특정 시점(Anchor Time) 기준 유저 행동 패턴을 학습하고  
-향후 30일 이내 휴면 여부(m2)를 예측하는 모델을 구축했으며,
+본 프로젝트는 약 378만 건의 전자상거래 이벤트 로그를 기반으로,
+특정 시점(Anchor Time)을 기준으로 유저 행동 패턴을 학습하고,
+향후 30일 이내 휴면(m2) 전환 가능성을 예측하는 모델을 구축합니다.
 
-이는 단순 이탈 예측이 아니라
-피처 생성 단계부터 데이터 누수(Data Leakage)를 철저히 차단한  
-실무 환경을 가정한 파이프라인을 구현하는 데 초점을 두었습니다.
+또한 본 프로젝트는 단순 모델 성능 경쟁이 아니라
+ - 시점 기반 데이터 누수(Data Leakage) 차단
+ - Time Split 기반의 실무형 검증 시나리오
+ - Top-K(예: 상위 5%) 타겟팅을 전제로 한 평가 체계
 
-( 최종 결과물은 실제 마케팅 캠페인(쿠폰 발송 등)에 바로 적용 가능한  
-타겟팅 기준으로 활용 가능하도록 설계했습니다. )  ---> 💟 요거는 보류
-
+를 파이프라인으로 구현하는 데 초점을 둡니다.
 
 ### ✦ 프로젝트 필요성 (배경)
 
-**1. 구독 피로도와 경쟁 심화 (High CAC vs Low Retention)**
-이커머스 시장의 포화로 인해 고객의 브랜드 전환(Switching)이 잦아지고 있습니다. 신규 고객 유치 비용(CAC)은 기존 고객 유지 비용보다 **약 5~25배** 더 비싸기 때문에, 기존 고객의 이탈을 막는 것이 수익성에 직결됩니다.
+**1. 신뢰 이슈가 “리텐션”에 직접 영향**  
+국내 이커머스는 가격/배송 경쟁뿐 아니라, 보안·CS·고객경험 같은 ‘신뢰’ 요인이 이용자 유지에 직접적인 영향을 줍니다.
+실제로 2025년 11월 말, 쿠팡의 대규모 개인정보 유출(33.7M 계정 규모로 보도) 이슈 이후 이용자 이탈을 뜻하는 ‘탈팡’ 담론이 확산되었고, DAU 변동 및 규제·조사 이슈 등 시장 리스크가 연이어 보도되었습니다
 
-**2. Rule-based 마케팅의 한계**
-"최근 3달간 접속 안 함"과 같은 사후약방문식 규칙은 이미 마음이 떠난 고객을 되돌리기 어렵습니다. 이탈 징후를 **사전에 포착**하여 선제적으로 대응할 수 있는 AI 모델이 필요합니다.
+**2. Rule-based 마케팅의 한계**  
+“최근 n일 미접속” 같은 규칙은 이미 늦은 사후 대응이 되기 쉽습니다.
+로그 기반 행동 패턴에서 이탈 징후를 사전에 포착하여 선제 대응할 수 있는 모델이 필요합니다.
 
-**3. 데이터 기반의 핀셋 타겟팅**
-직관이 아닌 유저의 행동 로그(클릭, 장바구니 등)를 분석하여 **'이탈 확률 상위 20% 고객'**을 선별하고, 마케팅 예산을 집중하여 ROI를 극대화해야 합니다.
+**3. 데이터 기반의 핀셋 타겟팅**  
+현실적으로 모든 고객에게 쿠폰/혜택을 제공할 수 없습니다.
+따라서 우리는 휴면 확률이 높은 상위 K% 고객을 선별하여 쿠폰을 제공함으로써, 마케팅 비용을 효율적으로 사용하고 리텐션 효과를 극대화하는 운영 시나리오를 가정합니다.
+
+## 💼 비즈니스 이해 (Business Understanding)
+
+### ✦ 이탈(휴면) 정의(라벨)
+- **m2(휴면)**: *(예시)* Anchor 시점(t) 이후 **H=30일 동안 구매/접속/핵심 이벤트가 0회**이면 휴면으로 정의한다.  
 
 
+### ✦ 타겟팅 가정 (Operational Targeting)
+- 운영 제약: 마케팅 예산/인력으로 인해 **상위 K% 고위험 고객만 케어 가능**
 
+<!-- ### ✦ 비용/효익 가정 (Cost–Benefit Assumption)
+- **이탈(휴면) 1건 손실 = L**, 캠페인(쿠폰) 1건 비용 = C  
+- 목표는 “모든 고객 정확 분류”가 아니라, **C를 최소로 쓰면서 L을 최대한 방어하는 Top-K 타겟팅 최적화**이다. -->
 
+## 📏 평가 지표 및 선택 이유 (Metrics & Rationale)
 
+본 프로젝트의 운영 목표는 **휴면상위 K% 고객에게만 쿠폰/케어를 수행**하는 것이다.  
+따라서 임계값(0.5) 기반 지표보다 **Top-K 타겟팅 성과**를 직접 측정하는 지표를 우선한다.
 
+### ✦ Main KPI (Primary)
+- **Lift@K**: 랜덤 타겟팅 대비 **몇 배 효율적인지**를 직관적으로 보여주는 실무 지표  
+  - Lift@K = Precision@K / Prevalence(전체 휴면 비율)
 
+### ✦ Secondary KPI
+- **Precision@K**: 상위 K% 타겟의 “순도” (쿠폰 낭비 최소화)
+- **Recall@K**: 전체 휴면 중 상위 K%가 커버한 비율 (커버리지)
 
-### ✦ 프로젝트 목표
+### ✦ Diagnostic / 참고 지표
+- **PR-AUC(AP)**: threshold를 변화시키며 Precision–Recall trade-off를 요약한 지표로,  
+  모델의 전반적인 랭킹 품질을 점검하는 용도로 활용한다.
+
+> Note: 본 프로젝트는 “Top-K 운영”이므로, 모델 선택은 Lift@K/Precision@K를 우선하고 PR-AUC는 보조로 사용한다.
+
+## 📄   프로젝트 목표
 
 **1. 문제의 실무적 재정의 (Practical Problem Definition)**
-복잡한 다중 분류 대신, 실제 마케팅 액션(쿠폰 발송 등)이 가능한 **휴면(Dormant, m2) 여부 이진 분류**로 문제를 단순화하여 실용성을 높였습니다.
+복잡한 다중 분류 대신, 실제 마케팅 액션(쿠폰 발송 등)이 가능한 **휴면(m2) 여부 이진 분류**로 문제를 단순화하여 실용성을 높였습니다.
 
-**2. 비즈니스 중심의 평가지표 (Business-Aligned Metrics)**
-클래스 불균형 상황에서 **단순 정확도(Accuracy)의 함정**을 피하기 위해 **PR-AUC**를 메인 지표로 삼고, 실제 타겟팅 효율을 보기 위해 **Precision@TopK**를 보조 지표로 활용했습니다.
+**2. 비즈니스 중심의 평가지표 (Business-Aligned Metrics)**  
+운영 시나리오가 **“상위 K%만 타겟”**이므로, 임계값(예: 0.5) 기반 지표만으로는 부족합니다.  
+따라서 랭킹 기반 지표를 사용합니다.  
+- PR-AUC(AP): PR 곡선의 요약(Threshold-free)
+- Precision@TopK(%) / Recall@TopK(%): 상위 K%의 타겟팅 품질
+- Lift@TopK(%): 랜덤 대비 효율(타겟팅 모델의 실무 지표)
 
 **3. 재현 가능한 파이프라인 (Reproducible Pipeline)**
-팀원 간 협업을 위해 모든 모델이 동일한 `Anchor Time`과 `Label`을 공유하도록 설계하여, 모델 간 성능을 공정하게 비교할 수 있는 환경을 구축했습니다.
+- 모든 모델이 동일한 Anchor/Label/Split을 공유하도록 표준화
+- Time Split로 Look-ahead(미래 정보) 누수 위험 최소화
+- 아티팩트(모델/스케일러/피처 순서/평가 결과)를 표준 디렉토리에 저장
 
+## 📏 평가 지표 및 선택 이유 (Metrics & Rationale)
 
+본 프로젝트의 운영 목표는 **휴면상위 K% 고객에게만 쿠폰/케어를 수행**하는 것이다.  
+따라서 임계값(0.5) 기반 지표보다 **Top-K 타겟팅 성과**를 직접 측정하는 지표를 우선한다.
+
+### ✦ Main KPI (Primary)
+- **Lift@K**: 랜덤 타겟팅 대비 **몇 배 효율적인지**를 직관적으로 보여주는 실무 지표  
+  - Lift@K = Precision@K / Prevalence(전체 휴면 비율)
+
+### ✦ Secondary KPI
+- **Precision@K**: 상위 K% 타겟의 “순도” (쿠폰 낭비 최소화)
+- **Recall@K**: 전체 휴면 중 상위 K%가 커버한 비율 (커버리지)
+
+### ✦ Diagnostic / 참고 지표
+- **PR-AUC(AP)**: threshold를 변화시키며 Precision–Recall trade-off를 요약한 지표로,  
+  모델의 전반적인 랭킹 품질을 점검하는 용도로 활용한다.
+
+> Note: 본 프로젝트는 “Top-K 운영”이므로, 모델 선택은 Lift@K/Precision@K를 우선하고 PR-AUC는 보조로 사용한다.
 ## 📂 프로젝트 설계 
 ```
 📦 SKN23-2nd-3Team/
 ├── data/
 │   ├── raw/
+│   │   └── 원본.csv
 │   │   └── *.parquet
 │   └── processed/
 │       └── *.parquet
@@ -128,6 +177,120 @@
 
 ```
 
+
+## 📄   프로젝트 내용
+### 데이터셋 (Dataset)
+**1. 데이터 정의**
+- 기간: 7개월 이커머스 로그
+- 대상: watch 카테고리
+- 브랜드: samsung / apple / xiaomi
+- 데이터 형태: 대용량 이벤트/거래 로그 기반의 사용자 단위 예측
+- train(11~1월)/val(2월)/test(3월)로 학습/검증/테스트로 나눠서 진행
+
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <figure>
+        <figcaption>📌 상세 라벨 분포(m0 : 정상 / m1 : 스위치(브랜드 전환) / m2 : 휴면)</figcaption>
+        <img src="assets\eda\label_distribution.png" width="100%" />
+      </figure>
+    </td>
+    <td align="center" width="50%">
+      <figure>
+        <figcaption>📌 휴면비율(m2/ m0+m1)</figcaption>
+                <img src="assets\eda\target_rate.png" width="100%" />
+      </figure>
+    </td>
+  </tr>
+</table>
+
+**2 제거/제외 컬럼(또는 후보) & 이유**
+-  `home_brand`, `future_brand`  
+  → **라벨 이후 정보가 포함될 가능성(미래 정보/사후 정보)**
+  → **train/val/test 경계를 침범할 가능성 -> 데이터 누수확률 증가**
+<img src="assets\eda\data_leak.png" width="100%" />
+
+**3 집계 기간(윈도우W)**
+- 과거 W=30일: **[t-30, t]** 구간만 사용
+- 미래 H=30일: **(t, t+30]** 구간으로 라벨 산출
+- 원칙: **event_time < anchor_time** 조건을 만족하는 데이터만 피처 생성에 사용
+
+**4 파생변수 목록**
+- Recency(경과일): 마지막 활동/구매가 오래될수록 휴면 가능성 증가
+
+- Frequency/Monetary(활동·구매·금액): 최근 활동·구매·지출이 많을수록 휴면 가능성 감소
+
+- Trend/Regularity(추세·규칙성): 최근 활동이 줄고 방문이 불규칙해질수록 휴면 가능성 증가 
+  
+| 파생변수(변수명)                   | 한글 이름           | 파생변수 설명                                   | 값이 높을수록 휴면확률            | 분류(Recency/Frequency/Monetary/기타) |
+| --------------------------- | --------------- | ----------------------------------------- | ----------------------- | --------------------------------- |
+| `n_events_30d`              | 최근 30일 활동 수     | Lookback 30일 내 전체 이벤트(조회/클릭/장바구니/구매 등) 횟수 | **감소(↓)**               | **Frequency**                     |
+| `active_days_30d`           | 최근 30일 활동 일수    | Lookback 30일 중 이벤트가 발생한 서로 다른 날짜 수        | **감소(↓)**               | **Frequency**                     |
+| `n_purchase_30d`            | 최근 30일 구매 횟수    | Lookback 30일 구매 완료 건수                     | **감소(↓)**               | **Monetary / Frequency**          |
+| `purchase_ratio`            | 구매 전환율          | 구매 관련 이벤트 비율(예: 구매수/전체 이벤트수 또는 구매/조회 등)   | **감소(↓)**               | **Engagement(기타)**                |
+| `days_since_last_event`     | 마지막 활동 경과일      | Anchor 기준 마지막 이벤트 이후 경과일                  | **증가(↑)**               | **Recency**                       |
+| `days_since_last_purchase`  | 마지막 구매 경과일      | Anchor 기준 마지막 구매 이후 경과일                   | **증가(↑)**               | **Recency**                       |
+| `brand_concentration_ratio` | 브랜드 집중도         | 특정 브랜드(또는 상위1개 브랜드) 활동/구매 비중(집중도)         | **상황 의존(±)**            | **Loyalty(기타)**                   |
+| `brand_switch_count_30d`    | 최근 30일 브랜드 전환 수 | Lookback 30일 동안 브랜드가 바뀐 횟수(연속 구매/조회 기준)   | **증가(↑)**               | **Loyalty(기타)**                   |
+| `total_spend_30d`           | 최근 30일 총 구매 금액  | Lookback 30일 결제 금액 합                      | **감소(↓)**               | **Monetary**                      |
+| `activity_ratio_15d`        | 최근 15일 활동 비율    | 최근 15일 활동량 / 30일 활동량 등 “최근성 가중” 비율        | **감소(↓)**               | **Recency / Trend(기타)**           |
+| `price_volatility`          | 가격 민감도(변동성)     | 사용자가 반응한 가격의 변동폭/편차(또는 할인 반응성)            | **증가(↑)**               | **Price(기타)**                     |
+| `n_events_7d`               | 최근 7일 활동 수      | Lookback 7일 내 이벤트 수(단기 참여도)               | **감소(↓)**               | **Frequency**                     |
+| `visit_regularity`          | 방문 규칙성          | 방문 간격의 규칙성(예: 간격 분산/표준편차 기반)              | **감소(↓)**               | **Engagement(기타)**                |
+| `activity_trend`            | 활동 추세           | 최근 구간 대비 활동 증가/감소 추세(예: 15일 vs 30일, 기울기)  | **감소(↓)** *(감소 추세일수록↑)* | **Trend(기타)**                     |
+
+**5 파생변수 상관관계 및 다중공선성**
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <figure>
+        <figcaption>📌 파생변수 상관관계 </figcaption>
+        <img src="assets\eda\feature_corr_heatmap.png" width="100%" />
+      </figure>
+    </td>
+    <td align="center" width="50%">
+      <figure>
+        <figcaption>📌 다중공선성(5이상시 위험) </figcaption>
+                <img src="assets\eda\vif.png" width="100%" />
+      </figure>
+    </td>
+  </tr>
+</table>
+
+
+**5  누수 방지 규칙(필수)**
+- 스케일러/인코더/결측치 대체 등 전처리는 **train에서만 fit**, val/test는 transform만 수행
+- 모델 선택/튜닝은 validation까지만 사용하고, test는 최종 1회 평가
+
+### 🧠 모델링 스토리라인 (Baseline → Strong ML → DL -> Strong DL)
+1) **Baseline (M1)**  
+- 단순/해석 가능한 모델 Logistic Regression로 기준선 확보
+
+2) **Strong ML (M2~M3)**  
+- LightGBM / HGB로 성능 상향 및 안정화
+
+3) **Deep Learning (M4~M5)**  
+- MLP를 기본버전부터 성능을 확장시킨 버전 마지막으로 최강의 버전?
+
+모든 실험은 동일한 Anchor/Label/Time Split을 공유하며,  
+평가 방식(PR-AUC, Precision/Recall/Lift@K)도 동일하게 유지하여 공정 비교한다.
+
+---
+
+### 모델별 성능 비교 
+- 필요 자료 -> 모델 평가지표 비교 그래프 및 표
+
+### 대표 모델 분석
+- 필요 자료 -> 모델명 / 선정 이유 / 시각화
+
+### 대표 코드
+
+
+### 
+
+### 시연 영상
+
+---
 
 ## 🛠️ 기술 스택
 
@@ -210,8 +373,8 @@ Random Split 사용 시, 동일 유저의 미래 정보가 Train Set에 포함�
 ### ⚖️ 2-1. 클래스 불균형 문제 (Class Imbalance)
 
 **문제 상황**  
-전체 유저 중 휴면(m2) 유저 비율이 5% 미만으로 매우 낮아,  
-모든 유저를 비휴면으로 예측해도 Accuracy가 90% 이상 나오는 왜곡이 발생했습니다.
+전체 유저 중 휴면(m2) 유저 비율이 81% 이상으로 압도적으로 높아,  
+모든 유저를 휴면으로 예측해도 Accuracy가 90% 이상 나오는 왜곡이 발생했습니다.
 
 **해결 방안**
 
@@ -308,5 +471,3 @@ Grid Search 방식의 비효율성으로 최적 모델 탐색에 한계가 있�
 | 김지우 | TBD |
 | 송주엽 | TBD |
 | 신승훈 | TBD |
-
-
