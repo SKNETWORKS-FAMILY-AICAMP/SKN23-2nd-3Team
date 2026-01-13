@@ -12,13 +12,11 @@ from pathlib import Path
 st.set_page_config(page_title="Top-K 모델 성능 비교", page_icon="⚖️", layout="wide")
 
 # ==============================================================================
-# 2. 경로 자동 설정 로직 (데이터 연결 핵심 수정)
+# 2. 경로 자동 설정 로직
 # ==============================================================================
-# 현재 파일 위치를 기준으로 'eval' 폴더를 자동으로 찾습니다.
 current_file_path = Path(__file__).resolve()
 project_root = current_file_path.parent.parent.parent
 
-# 탐색할 후보 경로 리스트 (우선순위 순)
 path_candidates = [
     project_root / "eval",             
     project_root / "models" / "eval",  
@@ -32,18 +30,13 @@ for path in path_candidates:
         EVAL_ROOT = path
         break
 
-# 경로를 못 찾았을 경우 에러 표시
 if EVAL_ROOT is None:
-    st.error("❌ 'eval' 데이터 폴더를 찾을 수 없습니다.")
-    st.write("탐색 시도한 경로:")
-    for p in path_candidates:
-        st.code(str(p))
+    st.error("❌ 'eval' 폴더를 찾을 수 없습니다.")
     st.stop()
 
 # ==============================================================================
 # 3. 유틸 및 UI 불러오기
 # ==============================================================================
-# utils.ui가 없어도 앱이 멈추지 않도록 더미 함수 처리
 try:
     from utils.ui import apply_base_layout, hide_sidebar, top_nav, apply_tooltip_style, model_tooltip, model_ui
     apply_base_layout()    
@@ -63,24 +56,8 @@ except ImportError:
 # ==============================================================================
 st.markdown("""
 <style>
-    /* 1. 최상단 여백 제거 (네비바가 들어갈 공간 확보) */
-    .block-container { 
-        padding-top: 0.6rem !important;
-        padding-bottom: 3rem; 
-    }
+    .block-container { padding-top: 1rem !important; padding-bottom: 3rem; }
     
-    /* 2. [핵심] 타이틀(h1) 강제로 위로 끌어올리기 */
-    h1 {
-        padding-top: 1rem !important;
-        margin-top: -2rem !important; /* 이 값을 조절해서 간격을 맞추세요 (-2rem ~ -4rem 추천) */
-    }
-
-    /* 3. 네비게이션 바와 본문 사이의 쓸데없는 간격 제거 */
-    div[data-testid="stVerticalBlock"] {
-        gap: 0.5rem !important;
-    }
-
-
     /* 헤더 스타일 */
     .compare-header {
         min-height: 60px;
@@ -149,14 +126,13 @@ CUSTOM_NAME_MAP = {
     "mlp_advanced": "다층 퍼셉트론 (DL3)"
 }
 
-@st.cache_data
+# @st.cache_data
 def load_model_inventory():
     """
     model_card.json을 읽고, CUSTOM_NAME_MAP에 정의된 이름으로 변환하여 로드합니다.
     """
     inventory = {"ML": {}, "DL": {}}
     
-    # EVAL_ROOT가 확실히 존재할 때만 순회
     if EVAL_ROOT and EVAL_ROOT.exists():
         for folder in EVAL_ROOT.iterdir():
             if folder.is_dir():
@@ -171,7 +147,7 @@ def load_model_inventory():
                         # 1. JSON에서 원래 display_name (또는 model_id) 가져오기
                         raw_name = card.get("display_name", card.get("model_id", folder.name))
                         
-                        # 2. 매핑 테이블 확인해서 이름 바꿔치기 (없으면 원래 이름 사용)
+                        # 2. 매핑 테이블 확인해서 이름 바꿔치기
                         final_name = CUSTOM_NAME_MAP.get(raw_name.strip(), raw_name)
                         
                         if category not in inventory: 
@@ -184,7 +160,7 @@ def load_model_inventory():
                         continue
     return inventory
 
-@st.cache_data
+# @st.cache_data # 주석처리
 def load_topk_metrics(folder_name):
     if not folder_name: return None
     path = EVAL_ROOT / folder_name / "topk_metrics.json"
@@ -192,7 +168,7 @@ def load_topk_metrics(folder_name):
         with open(path, "r", encoding="utf-8") as f: return json.load(f)
     return None
 
-@st.cache_data
+# @st.cache_data
 def load_topk_cutoffs(folder_name):
     if not folder_name: return None
     path = EVAL_ROOT / folder_name / "topk_cutoffs.json"
@@ -201,25 +177,35 @@ def load_topk_cutoffs(folder_name):
     return None
 
 def get_combined_metrics(metrics_data, cutoffs_data, k_percent):
+    """
+    [핵심 수정] k_percent(정수 5)와 json의 k_pct(실수 0.05 or 정수 5)를
+    유연하게 비교하여 값을 찾아냅니다.
+    """
     p, r, l, c = 0.0, 0.0, 0.0, 0.0
     
-    # 지표 데이터 로드 실패 시 0 반환
+    # 비교를 위해 실수형(0.05)과 정수형(5) 값을 미리 준비
+    k_float = k_percent / 100.0  # 0.05
+    k_int = k_percent            # 5
+
+    # 1. 지표 찾기
     if metrics_data and "metrics_by_k" in metrics_data:
         for item in metrics_data["metrics_by_k"]:
-            # JSON의 k_pct가 숫자형(5)인지 실수형(0.05)인지 확인 필요하지만
-            # 보통 정수형(5, 10)으로 저장하는 경우가 많으므로 그대로 비교
-            if item.get("k_pct") == k_percent:
+            val = item.get("k_pct")
+            # 실수형 비교(0.05) 혹은 정수형 비교(5) 둘 다 허용
+            if np.isclose(val, k_float) or int(val) == k_int:
                 p = item.get("precision_at_k", 0)
                 r = item.get("recall_at_k", 0)
                 l = item.get("lift_at_k", 0)
                 break
                 
-    # 컷오프 데이터 로드 실패 시 0 반환
+    # 2. 컷오프 찾기
     if cutoffs_data and "cutoffs_by_k" in cutoffs_data:
         for item in cutoffs_data["cutoffs_by_k"]:
-            if item.get("k_pct") == k_percent:
+            val = item.get("k_pct")
+            if np.isclose(val, k_float) or int(val) == k_int:
                 c = item.get("t_k", 0)
                 break
+                
     return p, r, l, c
 
 # ==============================================================================
@@ -231,30 +217,27 @@ st.markdown("""
 <div style="padding-bottom: 0px;">
     <h1 style="
         font-family: 'Helvetica Neue', sans-serif;
-        font-weight: 900;
+        font-weight: 800;
         font-size: 3rem;
-        background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+        background: linear-gradient(to right, #667eea, #764ba2);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         margin: 0;
         padding-bottom: 5px;
-        padding-top: 5px;
     ">
-        ⚡ Model Performance Compare
+        ⚖️ Model Performance Compare
     </h1>
     <p style="
         font-size: 1.1rem;
         color: #6c757d;
         margin: 0;
         font-weight: 500;
-        padding-bottom: 15px;
+        padding-bottom: 1px;
     ">
         Top-K(상위 N%) 구간별 모델 성능 정밀 비교 대시보드
     </p>
 </div>
 """, unsafe_allow_html=True)
-
-
 st.markdown("---")
 
 select, divider, _, compare = st.columns([1.5, 0.1, 0.1, 6])
@@ -274,7 +257,7 @@ with select:
         cat_a = st.radio(" ", avail_cats, key="cat_a", horizontal=True)
         models_a_map = MODEL_INVENTORY[cat_a]
         name_a = st.selectbox("Select Model", options=list(models_a_map.keys()), key="model_a")
-        folder_a = models_a_map[name_a] # 여기서 실제 폴더명을 가져옵니다
+        folder_a = models_a_map[name_a] # 실제 폴더명
 
     # Model B
     with st.container(border=True):
@@ -283,7 +266,7 @@ with select:
         cat_b = st.radio("  ", avail_cats, key="cat_b", horizontal=True, index=default_idx)
         models_b_map = MODEL_INVENTORY[cat_b]
         name_b = st.selectbox("Select Model", options=list(models_b_map.keys()), key="model_b")
-        folder_b = models_b_map[name_b] # 여기서 실제 폴더명을 가져옵니다
+        folder_b = models_b_map[name_b] # 실제 폴더명
         
     st.markdown("</div>", unsafe_allow_html=True)
 
@@ -302,7 +285,7 @@ with compare:
     metrics_b = load_topk_metrics(folder_b)
     cutoffs_b = load_topk_cutoffs(folder_b)
     
-    # 🔥 [중요] border=True 유지 (그림자 CSS 적용됨)
+    # 🔥 border=True 유지 (그림자 CSS 적용됨)
     with st.container(border=True):
         st.markdown("### Target Audience & ROI Simulation")
         v, col_s1, col_s2 = st.columns([0.1 ,4, 1], gap="medium")
@@ -310,12 +293,20 @@ with compare:
         with col_s1:
             k_percent = st.select_slider("🎯 Top-K 분석 범위 설정 (%)", options=[5, 10, 15, 30], value=5)
             
+            # 개선된 함수로 지표 추출
             prec_a, rec_a, lift_a, cut_a = get_combined_metrics(metrics_a, cutoffs_a, k_percent)
             prec_b, rec_b, lift_b, cut_b = get_combined_metrics(metrics_b, cutoffs_b, k_percent)
             
 
-            # [수정] 한 줄로 작성하여 HTML 렌더링 오류 방지
-            st.markdown(f"""<div class='cutoff-info'>✂️ <b>Cutoff Score :</b> <span>🔵 {name_a} > <b>{cut_a:.5f}</b></span> &nbsp;|&nbsp; <span>🔴 {name_b} > <b>{cut_b:.5f}</b></span></div>""", unsafe_allow_html=True)
+            # 툴팁 처리
+            try:
+                tooltip_a_cut = model_tooltip(name_a, color='#1f77b4')
+                tooltip_b_cut = model_tooltip(name_b, color='#d62728')
+            except:
+                tooltip_a_cut = f"<span style='color:#1f77b4'>{name_a}</span>"
+                tooltip_b_cut = f"<span style='color:#d62728'>{name_b}</span>"
+
+            st.markdown(f"""<div class='cutoff-info'>✂️ <b>Cutoff Score :</b> <span>🔵 {name_a} > <b>{cut_a:.3f}</b></span> &nbsp;|&nbsp; <span>🔴 {name_b} > <b>{cut_b:.3f}</b></span></div>""", unsafe_allow_html=True)
             st.markdown("<br>", unsafe_allow_html=True)
 
         with col_s2:
@@ -339,9 +330,9 @@ with compare:
             if metrics_a:
                 st.write("") 
                 c1, c2, c3 = st.columns(3)
-                c1.metric("Precision", f"{prec_a:.1%}", delta=f"{prec_a - prec_b:.1%}")
-                c2.metric("Recall", f"{rec_a:.1%}", delta=f"{rec_a - rec_b:.1%}")
-                c3.metric("Lift", f"{lift_a:.2f}", delta=f"{lift_a - lift_b:.2f}")
+                c1.metric("Precision", f"{prec_a:.2%}", delta=f"{prec_a - prec_b:.2%}")
+                c2.metric("Recall", f"{rec_a:.2%}", delta=f"{rec_a - rec_b:.2%}")
+                c3.metric("Lift", f"{lift_a:.2f}x", delta=f"{lift_a - lift_b:.2f}x")
                 st.write("")
 
                 fig_a = go.Figure(data=go.Scatterpolar(
@@ -373,8 +364,8 @@ with compare:
             if metrics_b:
                 st.write("")
                 c1, c2, c3 = st.columns(3)
-                c1.metric("Precision", f"{prec_b:.1%}", delta=f"{prec_b - prec_a:.1%}")
-                c2.metric("Recall", f"{rec_b:.1%}", delta=f"{rec_b - rec_a:.1%}")
+                c1.metric("Precision", f"{prec_b:.2%}", delta=f"{prec_b - prec_a:.2%}")
+                c2.metric("Recall", f"{rec_b:.2%}", delta=f"{rec_b - rec_a:.2%}")
                 c3.metric("Lift", f"{lift_b:.2f}", delta=f"{lift_b - lift_a:.2f}")
                 st.write("")
 

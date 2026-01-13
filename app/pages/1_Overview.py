@@ -231,7 +231,7 @@ with impact:
         <div class="metrics-title">📊 프로젝트 핵심 지표 요약</div>
         <div class="metrics-container">
             <div class="metric-item">
-                <div class="metric-item-value" style="color: #fbbf24;">18.5%</div>
+                <div class="metric-item-value" style="color: #fbbf24;">82%</div>
                 <div class="metric-item-label">휴면 고객 비율</div>
             </div>
             <div class="metric-item">

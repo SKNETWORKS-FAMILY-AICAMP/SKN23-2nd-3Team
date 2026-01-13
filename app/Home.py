@@ -281,12 +281,17 @@ with main1:
         st.markdown("""
         <div class="nav-card">
             <div class="nav-icon">📊</div>
-            <div class="card-title">Analysis</div>
+            <div class="card-title">Report</div>
             <div class="card-desc">결과 분석 리포트</div>
         </div>
         """, unsafe_allow_html=True)
-        if st.button("Analysis", use_container_width=True, key="btn3"):
-            st.switch_page("pages/3_Report_Download.py")
+        r0, report1, report2, r1 = st.columns([0.1, 1, 1, 0.1])
+        with report1:
+            if st.button("Report", use_container_width=True, key="btn3"):
+                st.switch_page("pages/3_Report_Download.py")
+        with report2:
+            if st.button("Predict", use_container_width=True, key="btn31"):
+                st.switch_page("pages/3_2_PREDICT.py")
 
     with col4:
         st.markdown("""
@@ -355,14 +360,14 @@ with main2:
     kpi_users.markdown("""
     <div class="kpi-card">
         <div class="kpi-label">Unique Users</div>
-        <div class="kpi-value">420K</div>
+        <div class="kpi-value">600K</div>
         <div class="kpi-delta"><br></div>
     </div>
     """, unsafe_allow_html=True)
 
     # ===================== 애니메이션 로직 =====================
     TOTAL = 3_780_000
-    MAX_M2 = 87
+    MAX_M2 = 82
     START_PRAUC = 0.65
     END_PRAUC = 0.934
 

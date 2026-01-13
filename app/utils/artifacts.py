@@ -1,114 +1,50 @@
-import os
-import json
-import torch
-import joblib
-import pandas as pd
-import matplotlib.pyplot as plt
-from app.utils.paths import PATHS
+# app/utils/artifacts.py
+
+from __future__ import annotations
+
+from typing import Any
+
+from app.utils.save import save_model_and_artifacts as _save_model_and_artifacts
 
 
 def save_model_and_artifacts(
-    model,
-    model_name,
-    model_type,
-    metrics,
-    scaler=None,
-    figures=None,
-    config=None,
-    report=None,
-):
+    model: Any,
+    model_name: str,
+    model_type: str,          # "ml" | "dl"
+    metrics: dict,
+    scaler: Any | None = None,
+    figures: dict[str, Any] | None = None,
+    config: dict[str, Any] | None = None,
+    report: str | None = None,       # (현재 save.py는 md report 저장 안 함)
+    *,
+    version: str = "baseline",
+    split: str = "test",
+    model_id: str | None = None,     # None이면 자동 생성
+) -> dict[str, str]:
     """
-    모델과 관련 결과물(Artifacts)을 지정된 경로에 저장합니다.
+    [레거시 호환용 래퍼]
+    예전 코드가 app.utils.artifacts.save_model_and_artifacts(...)를 호출하던 것을
+    프로젝트 표준 저장 함수(app.utils.save.save_model_and_artifacts)로 연결한다.
 
-    Args:
-        model: 학습된 모델 객체.
-        model_name (str): 모델 파일 이름 (예: 'mlp_enhance').
-        model_type (str): 'dl' (PyTorch) 또는 'ml' (Sklearn).
-        metrics (dict): evaluate_churn_metrics의 결과 딕셔너리.
-        scaler (object, optional): 스케일러 객체.
-        figures (dict, optional): {'이름': figure} 형태의 시각화 그래프 딕셔너리.
-        config (dict, optional): 저장할 하이퍼파라미터 설정값.
-        report (str, optional): Markdown 리포트 내용.
-
-    사용 예시:
-        >>> save_model_and_artifacts(
-                model=my_model,
-                model_name="mlp_demo",
-                model_type="dl",
-                metrics=my_metrics,
-                scaler=my_scaler,
-                figures={"pr_curve": fig}
-            )
+    - 팀 규칙(폴더로만 구분) + eval 산출물 규칙은 app/utils/save.py가 책임진다.
+    - report(md) 저장이 필요하면, 나중에 save.py에 기능을 추가하거나 별도 유틸로 분리한다.
     """
+    if model_id is None:
+        # 예: "ml__hgb", "dl__mlp_enhance"
+        model_id = f"{model_type}__{model_name}"
 
-    print(f">>> [Artifacts] Starting saving process for {model_name}...")
-
-    # Helper for clean saving
-    def clean_save_path(path):
-        if os.path.exists(path):
-            try:
-                os.remove(path)
-                print(f"  - [Clean] Deleted existing file: {path}")
-            except OSError as e:
-                print(f"  - [Warning] Could not delete {path}: {e}")
-
-    # Determine base path for models/scalers
-    if model_type == "dl":
-        base_model_path = PATHS.MODELS_DL
-    elif model_type == "ml":
-        base_model_path = PATHS.MODELS_ML
-    else:
-        raise ValueError("model_type must be 'dl' or 'ml'")
-
-    # 1. Save Model
-    if model_type == "dl":
-        model_path = os.path.join(base_model_path, f"{model_name}.pt")
-        clean_save_path(model_path)
-        torch.save(model.state_dict(), model_path)
-    elif model_type == "ml":
-        model_path = os.path.join(base_model_path, f"{model_name}.pkl")
-        clean_save_path(model_path)
-        joblib.dump(model, model_path)
-
-    print(f"  - Model saved to {model_path}")
-
-    # 2. Save Metrics
-    metrics_path = os.path.join(PATHS.METRICS, f"{model_name}_metrics.json")
-    clean_save_path(metrics_path)
-
-    # Combine metrics and config if provided
-    final_metrics = metrics.copy()
-    if config:
-        final_metrics["config"] = config
-
-    with open(metrics_path, "w", encoding="utf-8") as f:
-        json.dump(final_metrics, f, ensure_ascii=False, indent=4)
-
-    print(f"  - Metrics saved to {metrics_path}")
-
-    # 3. Save Scaler
-    if scaler:
-        scaler_path = os.path.join(base_model_path, f"{model_name}_scaler.pkl")
-        clean_save_path(scaler_path)
-        joblib.dump(scaler, scaler_path)
-        print(f"  - Scaler saved to {scaler_path}")
-
-    # 4. Save Figures
-    if figures:
-        for fig_name, fig in figures.items():
-            fig_path = os.path.join(
-                PATHS.ASSETS_TRAINING, f"{model_name}_{fig_name}.png"
-            )
-            clean_save_path(fig_path)
-            fig.savefig(fig_path, bbox_inches="tight")
-            print(f"  - Figure '{fig_name}' saved to {fig_path}")
-
-    # 5. Save Report
-    if report:
-        report_path = os.path.join(PATHS.REPORTS_TRAINING, f"{model_name}_report.md")
-        clean_save_path(report_path)
-        with open(report_path, "w", encoding="utf-8") as f:
-            f.write(report)
-        print(f"  - Report saved to {report_path}")
-
-    print(f">>> [Artifacts] All artifacts saved successfully.")
+    # NOTE: report 저장은 현재 표준 save.py에 없음(요구되면 다음 단계에서 추가)
+    return _save_model_and_artifacts(
+        model=model,
+        model_name=model_name,
+        model_type=model_type,
+        model_id=model_id,
+        split=split,
+        metrics=metrics,
+        y_true=metrics.get("_y_true_for_save", []),  # 호출부에서 넘기도록 바꾸는 게 정석
+        y_prob=metrics.get("_y_prob_for_save", []),  # 호출부에서 넘기도록 바꾸는 게 정석
+        version=version,
+        scaler=scaler,
+        figures=figures,
+        config=config,
+    )
