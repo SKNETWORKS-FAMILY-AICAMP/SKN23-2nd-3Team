@@ -221,23 +221,29 @@
 - Frequency/Monetary(활동·구매·금액): 최근 활동·구매·지출이 많을수록 휴면 가능성 감소
 
 - Trend/Regularity(추세·규칙성): 최근 활동이 줄고 방문이 불규칙해질수록 휴면 가능성 증가 
-  
-| 파생변수(변수명)                   | 한글 이름           | 파생변수 설명                                   | 값이 높을수록 휴면확률            | 분류(Recency/Frequency/Monetary/기타) |
+
+  <details>
+      <summary><b>파생변수(14) 정의표 보기</b></summary>
+
+| (변수명)                   | 한글명          |  설명                                   | 휴면확률(값↑)            | 분류(Recency/Frequency/Monetary/기타) |
 | --------------------------- | --------------- | ----------------------------------------- | ----------------------- | --------------------------------- |
-| `n_events_30d`              | 최근 30일 활동 수     | Lookback 30일 내 전체 이벤트(조회/클릭/장바구니/구매 등) 횟수 | **감소(↓)**               | **Frequency**                     |
-| `active_days_30d`           | 최근 30일 활동 일수    | Lookback 30일 중 이벤트가 발생한 서로 다른 날짜 수        | **감소(↓)**               | **Frequency**                     |
-| `n_purchase_30d`            | 최근 30일 구매 횟수    | Lookback 30일 구매 완료 건수                     | **감소(↓)**               | **Monetary / Frequency**          |
-| `purchase_ratio`            | 구매 전환율          | 구매 관련 이벤트 비율(예: 구매수/전체 이벤트수 또는 구매/조회 등)   | **감소(↓)**               | **Engagement(기타)**                |
+| `n_events_30d`              | 최근 30일 활동 수     | 30일 내 전체 이벤트 횟수 | **감소(↓)**               | **Frequency**                     |
+| `active_days_30d`           | 최근 30일 활동 일수    | 30일 중 이벤트가 발생한 날짜 수        | **감소(↓)**               | **Frequency**                     |
+| `n_purchase_30d`            | 최근 30일 구매 횟수    | 30일 구매 완료 건수                     | **감소(↓)**               | **Monetary / Frequency**          |
+| `purchase_ratio`            | 구매 전환율          | 구매 관련 이벤트 비율  | **감소(↓)**               | **Engagement(기타)**                |
 | `days_since_last_event`     | 마지막 활동 경과일      | Anchor 기준 마지막 이벤트 이후 경과일                  | **증가(↑)**               | **Recency**                       |
 | `days_since_last_purchase`  | 마지막 구매 경과일      | Anchor 기준 마지막 구매 이후 경과일                   | **증가(↑)**               | **Recency**                       |
-| `brand_concentration_ratio` | 브랜드 집중도         | 특정 브랜드(또는 상위1개 브랜드) 활동/구매 비중(집중도)         | **상황 의존(±)**            | **Loyalty(기타)**                   |
-| `brand_switch_count_30d`    | 최근 30일 브랜드 전환 수 | Lookback 30일 동안 브랜드가 바뀐 횟수(연속 구매/조회 기준)   | **증가(↑)**               | **Loyalty(기타)**                   |
+| `brand_concentration_ratio` | 브랜드 집중도         | 특정 브랜드 활동/구매 비중(집중도)         | **상황 의존(±)**            | **Loyalty(기타)**                   |
+| `brand_switch_count_30d`    | 30일 브랜드 전환 수 |  30일 동안 브랜드가 바뀐 횟수(연속 구매/조회 기준)   | **증가(↑)**               | **Loyalty(기타)**                   |
 | `total_spend_30d`           | 최근 30일 총 구매 금액  | Lookback 30일 결제 금액 합                      | **감소(↓)**               | **Monetary**                      |
-| `activity_ratio_15d`        | 최근 15일 활동 비율    | 최근 15일 활동량 / 30일 활동량 등 “최근성 가중” 비율        | **감소(↓)**               | **Recency / Trend(기타)**           |
-| `price_volatility`          | 가격 민감도(변동성)     | 사용자가 반응한 가격의 변동폭/편차(또는 할인 반응성)            | **증가(↑)**               | **Price(기타)**                     |
-| `n_events_7d`               | 최근 7일 활동 수      | Lookback 7일 내 이벤트 수(단기 참여도)               | **감소(↓)**               | **Frequency**                     |
-| `visit_regularity`          | 방문 규칙성          | 방문 간격의 규칙성(예: 간격 분산/표준편차 기반)              | **감소(↓)**               | **Engagement(기타)**                |
-| `activity_trend`            | 활동 추세           | 최근 구간 대비 활동 증가/감소 추세(예: 15일 vs 30일, 기울기)  | **감소(↓)** *(감소 추세일수록↑)* | **Trend(기타)**                     |
+| `activity_ratio_15d`        | 15일 활동 비율    | 15일 활동량 / 30일 활동량 등 “최근성 가중” 비율        | **감소(↓)**               | **Recency / Trend(기타)**           |
+| `price_volatility`          | 가격 민감도(변동성)     | 사용자가 반응한 가격의 변동폭/편차            | **증가(↑)**               | **Price(기타)**                     |
+| `n_events_7d`               | 7일 활동 수      | 7일 내 이벤트 수(단기 참여도)               | **감소(↓)**               | **Frequency**                     |
+| `visit_regularity`          | 방문 규칙성          | 방문 간격의 규칙성             | **감소(↓)**               | **Engagement(기타)**                |
+| `activity_trend`            | 활동 추세           | 최근 구간 대비 활동 증가/감소 추세 | **감소(↓)**  | **Trend(기타)**                     |
+
+</details>
+
 
 **5 파생변수 상관관계 및 다중공선성**
 <table>
