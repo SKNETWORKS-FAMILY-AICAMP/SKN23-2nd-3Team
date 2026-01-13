@@ -243,7 +243,7 @@ st.markdown("""
 
 # ===================== 메인 레이아웃 (원래 구조 유지) =====================
 st.markdown('<div class="main-title">⚡ E-commerce Churn Prediction</div>', unsafe_allow_html=True)
-main1, spacer, main2 = st.columns([1, 0.1, 1])
+main1, space1, main2, space2 = st.columns([1, 0.1, 1, 0.1])
 
 # ========== 왼쪽: 네비게이션 카드 ==========
 with main1:
@@ -362,9 +362,9 @@ with main2:
 
     # ===================== 애니메이션 로직 =====================
     TOTAL = 3_780_000
-    MAX_M2 = 18.5
+    MAX_M2 = 87
     START_PRAUC = 0.65
-    END_PRAUC = 0.82
+    END_PRAUC = 0.934
 
     for i in range(101):
         # ---- Progress ----
@@ -401,9 +401,15 @@ with main2:
 
         # ---- Donut Chart ----
         fig = go.Figure(go.Pie(
-            values=[100 - m2_pct, m2_pct],
+            # 1. [채워진 값, 나머지] 순서로 변경
+            values=[m2_pct, 100 - m2_pct],
             hole=0.55,
-            marker=dict(colors=["#E0E0E0", "#FF4B4B"]),
+            # 2. 색상 순서도 [빨강, 회색]으로 변경
+            marker=dict(colors=["#FF4B4B", "#E0E0E0"]),
+            # 3. 중요: 크기순 정렬을 막아야 애니메이션이 튀지 않음
+            sort=False,
+            # 4. 시계 방향으로 채워지도록 설정
+            direction='clockwise',
             textinfo="none"
         ))
 

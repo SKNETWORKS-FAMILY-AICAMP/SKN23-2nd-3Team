@@ -464,44 +464,8 @@ MODEL_TOOLTIP = {
     "HistGradientBoosting": """
         <b>📊 HistGradientBoosting (HGB)</b><br>
         데이터를 히스토그램(구간)으로 나누어 처리 속도를 획기적으로 높인 효율적인 부스팅 모델입니다.
-    """,
-
-    "Decision Tree": """
-        <b>🌳 의사결정 나무 (Decision Tree)</b><br>
-        데이터의 특징을 스무고개 하듯 단계적으로 분할하여 분류하는 직관적인 모델입니다.
-    """,
-
-    "ExtraTrees": """
-        <b>🌲 엑스트라 트리 (ExtraTrees)</b><br>
-        랜덤 포레스트보다 무작위성을 더 높여 과적합을 방지하고 속도를 높인 앙상블 모델입니다.
-    """,
-
-    # 딥러닝 모델
-    "DNN (MLP)": """
-        <b>🧠 DNN (Multi-Layer Perceptron)</b><br>
-        입력층과 출력층 사이에 여러 은닉층을 두어 복잡한 비선형 관계를 학습하는 심층 신경망입니다.
-    """,
-
-    "TabNet": """
-        <b>📑 TabNet</b><br>
-        트리 모델의 장점(특징 선택)과 딥러닝의 장점(표현 학습)을 결합한 정형 데이터 특화 모델입니다.
-    """,
-
-    "Wide & Deep": """
-        <b>🌐 Wide & Deep</b><br>
-        암기(Wide)와 일반화(Deep)를 동시에 수행하여 추천 시스템 등에 효과적인 하이브리드 모델입니다.
-    """,
-    
-    # (기존 코드에 있던 이름 대응)
-    "Baseline MLP": """
-        <b>🧠 Baseline MLP</b><br>
-        가장 기본적인 형태의 심층 신경망으로, 딥러닝 성능 비교의 기준점이 되는 모델입니다.
-    """,
-
-    "Deep ResNet": """
-        <b>🔗 Deep ResNet</b><br>
-        잔차 연결(Skip Connection)을 통해 층을 매우 깊게 쌓아도 학습이 잘 되도록 설계된 모델입니다.
     """
+
 }
 
 
