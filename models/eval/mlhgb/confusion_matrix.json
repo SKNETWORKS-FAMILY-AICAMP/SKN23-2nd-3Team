@@ -1,0 +1,19 @@
+{
+  "model_id": "ml__hgb",
+  "split": "test",
+  "threshold": 0.79098,
+  "labels": [
+    "non_m2",
+    "m2"
+  ],
+  "matrix": [
+    [
+      13325,
+      206
+    ],
+    [
+      82494,
+      5808
+    ]
+  ]
+}

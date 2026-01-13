@@ -1,0 +1,19 @@
+{
+  "model_id": "ml__lgbm",
+  "split": "test",
+  "threshold": 0.78238,
+  "labels": [
+    "non_m2",
+    "m2"
+  ],
+  "matrix": [
+    [
+      13331,
+      200
+    ],
+    [
+      82372,
+      5930
+    ]
+  ]
+}

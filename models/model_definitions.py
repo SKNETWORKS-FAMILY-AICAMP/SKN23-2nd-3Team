@@ -55,40 +55,21 @@ class MLP_base(nn.Module):
 
 
 class MLP_enhance(nn.Module):
-    """
-    [Enhanced 모델]
-    Batch Normalization과 Dropout을 적용하여 학습 안정성과 일반화 성능을 높인 표준 MLP 모델입니다.
-    용도: MLP_enhance.ipynb (단일 모델), MLP_advanced.ipynb (앙상블 구성원)
+    def __init__(
+        self,
+        input_dim: int,
+        hidden_dim: int = 128,
+        dropout_rate: float = 0.3,
+        activation: str = "relu",
+    ):
+        super().__init__()
 
-    구조 (Structure):
-        Input -> [Linear -> BN -> Act -> Dropout] x 2 -> Output
+        act1 = _make_activation(activation)
+        act2 = _make_activation(activation)
 
-    인자 (Args):
-        input_dim (int): 입력 피처의 개수
-        hidden_dim (int): 첫 번째 은닉층의 노드 수 (기본값: 128)
-        dropout_rate (float): 드롭아웃 확률 (기본값: 0.3)
-        activation (str): 활성화 함수 이름 ('relu', 'leaky_relu', 'elu', 'selu', 'tanh')
-    """
-
-    def __init__(self, input_dim, hidden_dim=128, dropout_rate=0.3, activation="relu"):
-        super(MLP_enhance, self).__init__()
-
-        # 활성화 함수 선택 (Activation Selection)
-        if activation == "relu":
-            self.activation = nn.ReLU()
-        elif activation == "leaky_relu":
-            self.activation = nn.LeakyReLU(0.01)
-        elif activation == "tanh":
-            self.activation = nn.Tanh()
-        elif activation == "elu":
-            self.activation = nn.ELU()
-        elif activation == "selu":
-            self.activation = nn.SELU()
-        else:
-            self.activation = nn.ReLU()
+        h2 = max(int(hidden_dim // 2), 1)
 
         self.net = nn.Sequential(
-            # [1] 첫 번째 은닉층 (First Hidden Layer)
             nn.Linear(input_dim, hidden_dim),
             nn.BatchNorm1d(hidden_dim),
             act1,

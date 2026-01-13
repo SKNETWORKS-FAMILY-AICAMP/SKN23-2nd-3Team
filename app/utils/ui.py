@@ -5,15 +5,6 @@ import streamlit as st
 def apply_base_layout():
     st.markdown("""
     <style>
-    /* 전체 컨테이너 */
-    .block-container {
-        padding-top: 1rem;
-        padding-bottom: 2rem;
-        padding-left: 2rem;
-        padding-right: 2rem;
-        max-width: 100%;
-    }
-
     /* 헤더 제거 */
     header[data-testid="stHeader"] {
         display: none;
@@ -211,7 +202,7 @@ def top_nav():
     
     with col2:
         # 메뉴 버튼들을 균등하게 배치 (각 버튼이 같은 너비)
-        menu_cols = st.columns([3,1,1,1,1,1])
+        menu_cols = st.columns([3,1,1,1,1,1,1])
         
         with menu_cols[1]:
             if st.button("Home", key="nav_home"):
@@ -230,6 +221,10 @@ def top_nav():
                 st.switch_page("pages/3_Report_Download.py")
         
         with menu_cols[5]:
+            if st.button("Predict", key="nav_predict"):
+                st.switch_page("pages/3_2_PREDICT.py")
+         
+        with menu_cols[6]:
             if st.button("Q&A", key="nav_qna"):
                 st.switch_page("pages/4_FAQ_QnA.py")
     
@@ -380,7 +375,6 @@ def model_ui():
 
 # hover + active
 def apply_tooltip_style():
-    """툴팁 공통 CSS (너비 확대 및 위쪽 표시로 변경)"""
     st.markdown("""
     <style>
     /* 툴팁 트리거 텍스트 스타일 */
@@ -440,32 +434,53 @@ def apply_tooltip_style():
 
 
 MODEL_TOOLTIP = {
-    # 머신러닝 모델 
     "Logistic Regression": """
         <b>📉 로지스틱 회귀 (Logistic Regression)</b><br>
-        데이터의 선형적 관계를 기반으로 이진 분류를 수행하는 가장 기초적인 모델입니다.
+        이진 분류를 위한 가장 기본적인 선형 모델입니다.
+        전체 모델 성능 비교를 위한 기준선(Baseline)으로 활용했습니다.
     """,
 
     "Random Forest": """
         <b>🌲 랜덤 포레스트 (Random Forest)</b><br>
-        여러 개의 결정 트리(Decision Tree)를 만들고 다수결(Bagging)로 예측하는 앙상블 모델입니다.
+        여러 결정 트리를 결합한 앙상블 기반 머신러닝 모델입니다.
+        비선형 패턴 학습 성능을 비교하기 위해 사용했습니다.
     """,
 
     "XGBoost": """
         <b>🚀 XGBoost</b><br>
-        이전 트리의 오차를 순차적으로 학습(Boosting)하여 성능을 극대화한 강력한 모델입니다.
+        이전 트리의 오류를 보완하며 학습하는 부스팅 기반 모델입니다.
+        높은 예측 성능을 보여 주요 비교 대상 모델로 활용했습니다.
     """,
 
     "LightGBM": """
         <b>⚡ LightGBM</b><br>
-        리프 중심(Leaf-wise) 성장 방식을 사용하여, 대용량 데이터도 빠르고 효율적으로 학습하는 모델입니다.
+        리프 중심 성장 방식을 사용하는 고속 부스팅 모델입니다.
+        학습 속도와 성능의 균형을 비교하기 위해 사용했습니다.
     """,
 
     "HistGradientBoosting": """
         <b>📊 HistGradientBoosting (HGB)</b><br>
-        데이터를 히스토그램(구간)으로 나누어 처리 속도를 획기적으로 높인 효율적인 부스팅 모델입니다.
-    """
+        입력 데이터를 히스토그램 단위로 처리하는 효율적인 부스팅 모델입니다.
+        성능과 안정성 측면에서 가장 균형 잡힌 머신러닝 모델로 평가되었습니다.
+    """,
 
+    "MLP_base": """
+        <b>🧩 기본 다층 퍼셉트론 (Standard MLP)</b><br>
+        가장 단순한 구조의 딥러닝 모델로,
+        전체 딥러닝 실험의 기준점(Baseline) 역할을 합니다.
+    """,
+
+    "MLP_enhance": """
+        <b>🛠️ 최적화 심층 신경망 (Optimized DNN)</b><br>
+        모델 구조와 학습 전략을 개선해
+        기본 MLP 대비 일반화 성능을 향상시킨 단일 모델입니다.
+    """,
+
+    "MLP_advanced": """
+        <b>👑 고성능 앙상블 네트워크 (Ensemble Network)</b><br>
+        성능이 검증된 단일 모델을 앙상블로 결합해
+        예측 안정성과 신뢰도를 극대화한 최종 선택 모델입니다.
+    """
 }
 
 

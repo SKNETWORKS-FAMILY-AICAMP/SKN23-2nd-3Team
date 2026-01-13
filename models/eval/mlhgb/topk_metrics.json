@@ -1,0 +1,31 @@
+{
+  "model_id": "ml__hgb",
+  "split": "test",
+  "base_rate": 0.86712,
+  "metrics_by_k": [
+    {
+      "k_pct": 5,
+      "precision_at_k": 0.96621,
+      "recall_at_k": 0.0557,
+      "lift_at_k": 1.11427
+    },
+    {
+      "k_pct": 10,
+      "precision_at_k": 0.96337,
+      "recall_at_k": 0.11109,
+      "lift_at_k": 1.11099
+    },
+    {
+      "k_pct": 15,
+      "precision_at_k": 0.96052,
+      "recall_at_k": 0.16614,
+      "lift_at_k": 1.1077
+    },
+    {
+      "k_pct": 30,
+      "precision_at_k": 0.94729,
+      "recall_at_k": 0.32772,
+      "lift_at_k": 1.09245
+    }
+  ]
+}

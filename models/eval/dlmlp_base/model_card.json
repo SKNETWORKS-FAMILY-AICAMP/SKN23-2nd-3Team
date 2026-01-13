@@ -1,0 +1,7 @@
+{
+  "model_id": "dl__mlp_base",
+  "display_name": "MLP_base",
+  "category": "DL",
+  "split": "test",
+  "version": "baseline"
+}
