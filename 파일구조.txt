@@ -1,55 +1,69 @@
 SKN23-2nd-3Team/
-├── data/
-│   ├── raw/                         # 원본 parquet (변경 금지)
-│   └── processed/                   # 선택: 가공된 데이터
-│
-├── models/
-│   ├── ml/                          # ML 모델 파일 (.pkl)
-│   │   └── hgb_baseline.pkl
-│   │
-│   ├── dl/                          # DL 모델 파일 (.pt)
-│   │   └── mlp_baseline.pt
-│   │
-│   ├── preprocessing/               # 전처리 객체
-│   │   └── hgb_baseline_scaler.pkl
-│   │
-│   ├── metrics/                     # 평가 지표 (항상 저장)
-│   │   └── hgb_baseline_metrics.json
-│   │
-│   └── configs/                     # 재현성 정보 (항상 저장)
-│       └── hgb_baseline_config.json
-│
-├── assets/
-│   └── training/                    # 학습 결과 시각화
-│       ├── hgb_baseline_confusion_matrix.png
-│       └── hgb_baseline_pr_curve.png
-│
-├── reports/
-│   └── training/                    # 학습 요약 리포트
-│       └── training_summary.json
-│
-├── notebooks/
-│   ├── ml/
-│   │   └── hgb.ipynb                # ML 실험 노트북
-│   └── dl/
-│       └── mlp.ipynb                # DL 실험 노트북
 │
 ├── app/
-│   ├── Home.py                      # Streamlit 메인 엔트리
-│   │
+│   ├── Home.py
 │   ├── pages/
-│   │   ├── 1_Overview.py
-│   │   ├── 2_Model_Compare.py
-│   │   ├── 3_Report_Download.py
-│   │   └── 4_FAQ_QnA.py
-│   │
+│   │   └── *.py
 │   └── utils/
-│       ├── paths.py                 # 전역 경로 정의 (인프라)
-│       ├── save.py                  # 저장 통합 유틸
-│       ├── load_model.py            # 모델/스케일러 로딩 (예정)
-│       ├── ui.py                    # UI (하는 중^^)
-│       └── __init__.py              # 패키지 인식용 (빈 파일)
+│       ├── __init__.py
+│       ├── paths.py
+│       ├── save.py
+│       ├── load_model.py
+│       ├── load_metrics.py
+│       ├── plotting.py
+│       └── ui.py
 │
-├── README.md                        # 프로젝트 설명 / 실행 방법
-├── requirements.txt                 # 환경 고정
-└── .gitignore
+├── assets/
+│   ├── eda/
+│   │   └── *.py
+│   ├── training/
+│   │   └── *.png
+│   └── ui/
+│       └── *.py
+│
+├── data/
+│   ├── raw/
+│   │   └── *.parquet
+│   └── processed/
+│       └── *.parquet
+│
+├── models/
+│   ├── model_definitions.py
+│   │
+│   ├── ml/
+│   │   └── *.pkl
+│   │
+│   ├── dl/
+│   │   └── *.pt
+│   │
+│   ├── preprocessing/
+│   │   └── *_scaler.pkl
+│   │
+│   ├── configs/
+│   │   └── *.json
+│   │
+│   └── eval/
+│       └── <model_id>/
+│           ├── model_card.json
+│           ├── pr_metrics.json
+│           ├── topk_metrics.json
+│           └── topk_cutoffs.json
+│
+├── notebooks/
+│   ├── dl/
+│   │   └── *.ipynb
+│   └── ml/
+│       └── *.ipynb
+│
+├── reports/
+│   ├── preprocessing/
+│   │   └── *.json
+│   ├── training/
+│   │   └── *.md
+│   └── insights/
+│       └── *.md
+│
+├── README.md
+├── requirements.txt
+├── .gitignore
+└── 파일구조.txt

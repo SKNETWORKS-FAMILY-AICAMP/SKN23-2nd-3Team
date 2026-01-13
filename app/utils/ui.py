@@ -1,7 +1,7 @@
 # utils/ui.py
 import streamlit as st
 
-# ======= 페이지 여백 확장 ========
+# == 페이지 여백 확장 ===
 def apply_base_layout():
     st.markdown("""
     <style>
@@ -32,18 +32,19 @@ def apply_base_layout():
     """, unsafe_allow_html=True)
 
 
-# ======== 사이드바 숨김 ===========
+# === 사이드바 숨김 =
 def hide_sidebar():
     st.markdown("""
     <style>
     [data-testid="stSidebar"] {
         display: none;
+        opacity: 0;
     }
     </style>
     """, unsafe_allow_html=True)
 
 
-# ==== 상단 네비게이션 바 ===========
+# ==== 상단 네비게이션 바 =
 def top_nav():
     st.markdown("""
     <style>
@@ -234,7 +235,7 @@ def top_nav():
     
     st.markdown('</div>', unsafe_allow_html=True)
 
-# ========= 1_Overview.py =========
+# ==== 1_Overview.py ====
 
 def overview_ui():
     st.markdown("""
@@ -353,7 +354,7 @@ def overview_ui():
     </style>
     """, unsafe_allow_html=True)
 
-# =========== 2_Model_Compare.py ===========
+# = 2_Model_Compare.py =
 def model_ui():
     st.markdown("""
     <style>
@@ -526,7 +527,7 @@ def model_tooltip(model_name: str, color: str = "#2563eb"):
 
 
 
-# ============ 4_FAQ_QnA.py ============
+# == 4_FAQ_QnA.py ==
 
 # CSS 스타일링
 def QnA_ui():
