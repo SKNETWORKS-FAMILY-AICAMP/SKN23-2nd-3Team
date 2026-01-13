@@ -33,17 +33,33 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ======= Hero Section =======
-# st.markdown("""
-# <div class="faq-hero">
-#     <div class="faq-hero-title">Q&A</div>
-#     <div class="faq-hero-subtitle">
-#         🚀 SKN23 2nd 3TEAM 프로젝트의 모델 선택, 평가 지표 등에 대한 
-#         궁금증을 해결해드립니다.
-#     </div>
-# </div>
-# """, unsafe_allow_html=True)
-
-st.markdown("# ❓ QnA")
+st.markdown("""
+<div style="padding-bottom: 0px;">
+    <h1 style="
+        font-family: 'Helvetica Neue', sans-serif;
+        font-weight: 900;
+        font-size: 3rem;
+        background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin: 0;
+        padding-bottom: 5px;
+        padding-top: 10px;
+    ">
+    ⚡ Q&A
+    </h1>
+    <p style="
+        font-size: 1.1rem;
+        color: #6c757d;
+        margin: 0;
+        font-weight: 500;
+        padding-bottom: 15px;
+    ">
+        FAQ & QnA
+    </p>
+</div>
+""", unsafe_allow_html=True)
+# st.divider()
 
 # ===== 검색 기능 ======
 st.markdown('<div class="search-container">', unsafe_allow_html=True)
@@ -55,7 +71,7 @@ search_query = st.text_input(
 st.markdown('</div>', unsafe_allow_html=True)
 
 # 카테고리 필터 (데이터 구조에 맞춰 업데이트)
-categories = ["전체", "기획 및 비즈니스", "데이터 및 평가지표", "모델 선정", "엔지니어링 및 실무"]
+categories = ["전체", "프로젝트 기획 및 철학", "모델링 방향 및 문제 정의", "분석 결과 평가 및 지표 선택", "실제 서비스 적용 및 의사결정"]
 selected_category = st.radio(
     "카테고리",
     categories,
@@ -66,160 +82,136 @@ selected_category = st.radio(
 st.markdown("---")
 
 # ==============================================================================
-# FAQ 데이터 구조화 (요청하신 모든 내용을 통합)
+# FAQ 데이터 구조화 (수정 완료)
 # ==============================================================================
 faq_data = {
-    "기획 및 비즈니스": [
+    "프로젝트 기획 및 철학": [
         {
             "question": "수많은 주제 중 왜 '고객 이탈 예측'을 선정했나요?",
             "answer": """
-**A. 기업 경영의 핵심 리스크 관리**
-
-기업 경영에서 가장 큰 리스크는 **'고객이 왜 떠나는지 모른 채 떠나보내는 것'**입니다. 
-신규 고객 유치 비용(CAC)은 기존 고객 유지 비용보다 **5~25배** 더 높습니다. 
-따라서 데이터 기반의 **'선제적 케어'**를 통해 기업의 수익성을 방어하고, 고객의 서비스 경험을 개선하고자 이 주제를 선정했습니다.
+<strong>A. 비용 효율성 및 선제적 관리</strong><br>
+<br>
+이커머스에서는 <strong>신규 고객 유치 비용</strong>이 기존 고객 유지 비용보다 큽니다.<br>
+본 프로젝트는 전자상거래 로그 데이터를 기반으로 <strong>휴면(m2) 가능성이 높은 고객</strong>을 사전에 식별하여 수익성을 방어하고자 진행되었습니다.
             """,
             "tags": ["기획의도", "ROI", "리텐션"]
         },
         {
-            "question": "왜 3단계 분류가 아닌 이진(Binary) 분류를 선택했나요?",
+            "question": "왜 고객을 단계로 나누지 않고 '상위 K% 이탈 가능 고객' 방식으로 접근했나요?",
             "answer": """
-**A. 의사결정의 명확성 (Actionability)**
-
-실무적인 의사결정의 명확성 때문입니다. 
-'주의/경고/위험' 같은 모호한 분류보다, **"지금 마케팅 예산을 집행할 것인가?"**라는 명확한 행동 기준(Action Item)을 제시하여 현업의 실행력을 높이기 위함입니다.
+<strong>A. 마케팅 실행력(Actionability) 강화</strong><br>
+<br>
+이커머스 고객은 브랜드 유지, 전환(Switch), 휴면 등 행동 맥락이 다양합니다.<br>
+따라서 모호한 단계 구분보다는, 점수 기반으로 <strong>상위 K% 이탈 가능 고객</strong>을 선별하는 방식이 실제 <strong>타겟 마케팅</strong> 활용 관점에서 더 적합하다고 판단했습니다.
             """,
-            "tags": ["이진분류", "의사결정", "마케팅"]
+            "tags": ["Top-K", "마케팅", "타겟팅"]
         },
         {
-            "question": "이 모델은 실제 서비스에 어떻게 활용될 수 있나요?",
+            "question": "왜 본 프로젝트에서는 휴면 고객을 이탈 고객으로 정의했나요?",
             "answer": """
-**핵심 활용 시나리오:**
-
-1. **🎯 타겟 마케팅:** 이탈 가능성이 높은 상위 유저를 사전에 식별하여 개인화된 쿠폰 제공
-2. **📧 자동화된 리텐션 캠페인:** 이탈 위험 감지 시, 적절한 타이밍에 푸시 알림 발송
-3. **💰 비용 최적화:** 무분별한 쿠폰 살포를 막고, ROI 극대화를 위한 예산 정밀 배분
-
-👉 **단순 예측이 아니라 '비즈니스 의사결정'을 돕는 도구입니다.**
+<strong>A. 실질적인 이탈 관리 시점</strong><br>
+<br>
+장기간 미활동 고객은 추가 액션이 없을 경우 <strong>재활성화 가능성</strong>이 낮아지는 경향이 있습니다.<br>
+따라서 본 프로젝트에서는 <strong>휴면 상태 진입</strong>을 실질적인 이탈 관리 시점으로 정의했습니다.
             """,
-            "tags": ["실무적용", "CRM", "비용절감"]
+            "tags": ["휴면고객", "이탈정의", "재활성화"]
         }
     ],
-    "데이터 및 평가지표": [
+    "모델링 방향 및 문제 정의": [
         {
-            "question": "왜 정확도(Accuracy)를 성능 지표에서 제외했나요?",
+            "question": "휴면(m2) 고객 식별을 위해 다중 분류가 아닌 이진 분류를 선택한 이유는 무엇인가요?",
             "answer": """
-**A. 불균형 데이터(Imbalanced Data)의 함정**
-
-이탈자(Churn)가 소수인 데이터에서 정확도는 '착시'를 일으킵니다. 
-모델이 무조건 "이탈 안 함"이라고만 예측해도 정확도는 90% 이상 나올 수 있지만, **실제 이탈자는 한 명도 못 잡는 무용지물 모델**이 됩니다. 
-우리는 이 함정을 피하고자 **Recall**과 **PR-AUC**에 집중했습니다.
+<strong>A. 명확한 액션 플랜 수립</strong><br>
+<br>
+실제 마케팅 액션은 휴면 여부에 따라 명확히 구분되는 경우가 많습니다.<br>
+이에 따라 본 프로젝트에서는 <strong>휴면(m2) vs 비휴면(m0, m1)</strong>의 <strong>이진 분류(Binary Classification)</strong>로 문제를 단순화하여 해결했습니다.
+            """,
+            "tags": ["이진분류", "문제정의", "단순화"]
+        },
+        {
+            "question": "본 프로젝트에서는 어떤 머신러닝·딥러닝 모델들을 사용했나요?",
+            "answer": """
+<strong>A. ML 3종 및 DL(MLP) 모델 비교</strong><br>
+<br>
+• <strong>머신러닝(ML):</strong> Logistic Regression, LightGBM, HGB (3종)<br>
+• <strong>딥러닝(DL):</strong> MLP(다층 퍼셉트론) 기반 딥러닝 모델 3종<br>
+<br>
+딥러닝 모델은 규제 기법과 구조적 변형을 단계적으로 적용하며 성능을 비교·실험했습니다.<br>
+1. <strong>MLP_base:</strong> 기본 3층 신경망 (Baseline)<br>
+2. <strong>MLP_enhance:</strong> Base + 배치 정규화 + 드롭아웃<br>
+3. <strong>MLP_advanced:</strong> ResNet 구조 + Focal Loss
+            """,
+            "tags": ["모델선정", "LightGBM", "MLP", "ResNet"]
+        }
+    ],
+    "분석 결과 평가 및 지표 선택": [
+        {
+            "question": "왜 정확도(Accuracy)를 주요 성능 지표로 사용하지 않았나요?",
+            "answer": """
+<strong>A. 성능 과대평가 방지</strong><br>
+<br>
+휴면(m2) 유저 비율이 높은 데이터 특성상, <strong>Accuracy(정확도)</strong>는 모델 성능을 과대평가할 위험이 있습니다.<br>
+따라서 전체적인 예측 신뢰도는 <strong>PR-AUC</strong>로 확인하고, 실질적인 선별 성능은 <strong>Top-K 지표</strong>로 평가했습니다.
             """,
             "tags": ["정확도", "데이터불균형", "함정"]
         },
         {
-            "question": "왜 Macro F1-score를 핵심 지표로 사용했나요?",
+            "question": "왜 Top-K 기반 Precision·Recall·Lift를 핵심으로, PR-AUC는 보조로 썼나요?",
             "answer": """
-**A. 소수 클래스(이탈자)를 존중하기 위함**
-
-**Macro F1-score**는 클래스별 데이터 양과 상관없이 **모든 클래스를 동등하게 평가**합니다.
-반면 Micro F1이나 Accuracy는 데이터가 많은 쪽(비이탈)에 점수가 휘둘립니다.
-이탈 예측의 핵심은 **소수인 '이탈자'를 얼마나 잘 맞추느냐**이므로, Macro F1이 가장 정직한 지표입니다.
+<strong>A. 타겟팅 목적에 부합하는 지표 선정</strong><br>
+<br>
+본 프로젝트의 목적은 <strong>상위 K% 고객 선별</strong>입니다.<br>
+따라서 <strong>Top-K 기반 Precision·Recall·Lift</strong>를 핵심 지표로 삼아 타겟팅 성능을 검증하고, <strong>PR-AUC</strong>는 모델의 전반적인 분별력과 안정성을 확인하는 <strong>보조 지표</strong>로 활용했습니다.
             """,
-            "tags": ["Macro F1", "평가지표", "핵심"]
+            "tags": ["Top-K", "Lift", "PR-AUC"]
         },
         {
-            "question": "왜 ROC Curve보다 PR Curve와 Lift Chart를 강조했나요?",
+            "question": "왜 F1-score 및 macro·micro F1을 주요 지표로 쓰지 않았나요?",
             "answer": """
-**A. 비즈니스 현실을 반영하는 정직한 도구**
-
-* **ROC Curve:** 데이터 불균형이 심할 때 성능이 좋아 보이게 부풀려지는 경향이 있습니다.
-* **PR Curve & Lift Chart:** 실제 타겟인 '이탈자'를 얼마나 정확하고 효율적으로 찾아내는지 가감 없이 보여줍니다. 
-
-**예산 집행을 결정해야 하는 비즈니스 상황**에서는 PR Curve와 Lift Chart가 훨씬 신뢰할 수 있는 도구입니다.
+<strong>A. 임계값(Threshold) 의존성 탈피</strong><br>
+<br>
+F1 관련 지표들은 특정 <strong>임계값(0.5 등)</strong>을 기준으로 한 분류 성능을 요약합니다.<br>
+점수 기반으로 고객을 정렬하여 <strong>상위 K%를 선별</strong>하는 본 프로젝트의 활용 목적을 직접적으로 반영하기 어렵다고 판단하여 제외했습니다.
             """,
-            "tags": ["PR-AUC", "Lift Chart", "시각화"]
+            "tags": ["F1-score", "임계값", "평가기준"]
+        },
+        {
+            "question": "왜 임계값(threshold)보다 Top-K 기준을 사용했나요?",
+            "answer": """
+<strong>A. 예산 및 리소스 기반 의사결정</strong><br>
+<br>
+임계값 기반 분류는 참고용으로만 활용했습니다.<br>
+실무에서는 가용 예산에 맞춰 대상을 선정해야 하므로, 점수 기반 정렬 후 <strong>상위 K% 고객</strong>의 성과(Precision·Recall·Lift)를 확인하는 것이 훨씬 합리적입니다.
+            """,
+            "tags": ["Top-K", "랭킹", "실무적용"]
+        },
+        {
+            "question": "왜 CSV가 아니라 Parquet 파일을 사용했나요?",
+            "answer": """
+<strong>A. 대용량 데이터 처리 효율성</strong><br>
+<br>
+<strong>Parquet</strong>는 열 지향(Columnar) 저장 방식으로 대용량 데이터 처리에 매우 효율적입니다.<br>
+이를 통해 피처 생성 및 분석 과정에서 <strong>데이터 로딩 병목(I/O)</strong>을 획기적으로 줄일 수 있었습니다.
+            """,
+            "tags": ["Parquet", "최적화", "데이터엔지니어링"]
         }
     ],
-    "모델 선정": [
+    "실제 서비스 적용 및 의사결정": [
         {
-            "question": "왜 여러 모델 중 LightGBM을 최종 선택했나요?",
+            "question": "이 분석 결과는 실제 서비스에서 어떻게 활용할 수 있나요?",
             "answer": """
-우리는 **성능뿐만 아니라 해석 가능성, 안정성, 실서비스 적용 가능성**을 함께 고려했습니다.
-
-**최종 선택 모델: LightGBM**
-* ✅ **Macro F1-score 1위:** 불균형 데이터에서 가장 균형 잡힌 성능
-* ✅ **속도:** XGBoost 대비 2배 이상 빠른 학습 및 추론 속도 (배포 유리)
-* ✅ **해석 가능:** Feature Importance를 통해 마케팅 부서 설득 가능
+<strong>A. 정밀 타겟팅 및 마케팅 최적화</strong><br>
+<br>
+고객을 이탈 가능성 점수로 정렬하여 <strong>상위 K% 고객</strong>을 핵심 타겟으로 설정할 수 있습니다.<br>
+이들을 대상으로 <strong>쿠폰 발송, 리마인드 메시지, 개인화 추천</strong> 등의 마케팅 액션을 우선 적용함으로써 마케팅 ROI를 극대화할 수 있습니다.
             """,
-            "tags": ["LightGBM", "최종선택", "SOTA"]
-        },
-        {
-            "question": "다른 모델들과의 성능 차이는 얼마나 되나요?",
-            "answer": """
-**주요 모델 성능 비교 (Benchmark):**
-
-| 모델 | Macro F1 | PR-AUC | 추론 속도 |
-|------|----------|---------|-----------|
-| **LightGBM** | **0.85** | **0.82** | ⚡ **빠름** |
-| XGBoost | 0.83 | 0.81 | 보통 |
-| Random Forest | 0.79 | 0.77 | 느림 |
-| Logistic Reg | 0.72 | 0.70 | ⚡ 빠름 |
-
-LightGBM이 **성능과 효율성(속도)을 모두 만족**시키는 최적의 선택이었습니다.
-            """,
-            "tags": ["벤치마크", "성능비교"]
-        }
-    ],
-    "엔지니어링 및 실무": [
-        {
-            "question": "모델이 왜 이 고객을 이탈자로 예측했는지 설명할 수 있나요?",
-            "answer": """
-**A. XAI (Explainable AI) 적용**
-
-네, 가능합니다. 저희는 단순 블랙박스 모델을 지양합니다.
-**SHAP**이나 **Feature Importance** 분석을 통해 *"최근 접속일수 급감"*, *"결제 금액 감소"* 같은 구체적인 원인을 제시합니다.
-이는 마케팅 부서가 **"왜 이 사람에게 쿠폰을 줘야 하는지"**에 대한 설득력 있는 근거가 됩니다.
-            """,
-            "tags": ["XAI", "설명가능성", "SHAP"]
-        },
-        {
-            "question": "왜 변수를 더 많이 넣지 않고 14~22개만 사용했나요?",
-            "answer": """
-**A. 과적합(Overfitting) 방지 및 효율성**
-
-변수가 무작정 많다고 성능이 오르지 않습니다. 오히려 노이즈가 되어 모델을 방해합니다.
-도메인 지식과 상관관계 분석을 통해 **이탈과 가장 밀접한 '핵심 변수'만 엄선**하는 Feature Selection 과정을 거쳤습니다.
-이를 통해 **가볍지만 강력하고, 유지보수가 쉬운 모델**을 만들었습니다.
-            """,
-            "tags": ["Feature Selection", "최적화", "과적합"]
-        },
-        {
-            "question": "왜 CSV가 아니라 Parquet 파일인가요?",
-            "answer": """
-**A. 속도와 용량의 최적화**
-
-* **용량:** CSV 대비 약 1/4 수준으로 압축됩니다.
-* **속도:** 열 지향(Columnar) 저장 방식이라 대시보드 로딩 속도가 획기적으로 빠릅니다.
-대용량 데이터 환경에서도 **스트림릿 앱이 지연 없이 실시간으로 작동**하게 하기 위한 기술적 선택입니다.
-            """,
-            "tags": ["Parquet", "데이터엔지니어링", "최적화"]
-        },
-        {
-            "question": "학습 데이터에 없는 새로운 데이터가 들어오면 어떻게 되나요?",
-            "answer": """
-**A. 일반화(Generalization) 및 재학습 파이프라인**
-
-1. **StandardScaler:** 데이터 스케일링을 통해 수치 크기에 편향되지 않도록 설계했습니다.
-2. **Retraining:** 향후 데이터 분포 변화(Data Drift)에 대응하기 위해, 주기적으로 최신 데이터를 반영해 모델을 업데이트하는 **재학습 파이프라인**을 고려하고 있습니다.
-            """,
-            "tags": ["일반화", "재학습", "MLOps"]
+            "tags": ["CRM", "마케팅액션", "개인화"]
         }
     ]
 }
 
 # ==============================================================================
-# FAQ 렌더링 로직
+# FAQ 렌더링 로직 (unsafe_allow_html=True 적용)
 # ==============================================================================
 def render_faq(category_name, faqs):
     # 카테고리 헤더 표시
@@ -237,11 +229,9 @@ def render_faq(category_name, faqs):
                 continue
         
         # 아코디언(Expander) 생성
-        # 검색어가 있거나, 첫 번째 항목일 경우 자동으로 열리게 설정 (선택 사항)
-        is_expanded = (idx == 0 and not search_query) or (search_query != "")
-        
         with st.expander(f"Q. {faq['question']}", expanded=False):
-            st.markdown(faq["answer"])
+            # [수정됨] HTML 태그 렌더링 활성화
+            st.markdown(faq["answer"], unsafe_allow_html=True)
             
             # 태그 표시
             if "tags" in faq:
