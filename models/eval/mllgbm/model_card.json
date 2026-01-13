@@ -1,0 +1,7 @@
+{
+  "model_id": "ml__lgbm",
+  "display_name": "LightGBM",
+  "category": "ML",
+  "split": "test",
+  "version": "tuned_on_val"
+}
