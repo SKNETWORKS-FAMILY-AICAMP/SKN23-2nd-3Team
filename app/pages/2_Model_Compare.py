@@ -46,24 +46,29 @@ except ImportError:
     def model_tooltip(name, color):
         return f"<span style='color:{color}'>{name}</span>"
 
-# ============ 간격 조정 =============
+# ==== 간격 조정 =====
 st.markdown("""
 <style>
+    /* 1. 최상단 여백 제거 (네비바가 들어갈 공간 확보) */
     .block-container { 
-        padding-top: 0.6rem !important;
+        padding-top: 0rem !important;
         padding-bottom: 3rem; 
     }
+    
+    /* 2. [핵심] 타이틀(h1) 강제로 위로 끌어올리기 */
     h1 {
         padding-top: 0rem !important;
-        margin-top: -2rem !important;
+        margin-top: -2rem !important; /* 이 값을 조절해서 간격을 맞추세요 (-2rem ~ -4rem 추천) */
     }
+
+    /* 3. 네비게이션 바와 본문 사이의 쓸데없는 간격 제거 */
     div[data-testid="stVerticalBlock"] {
         gap: 0.5rem !important;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# ==================================
+# =============================
 
 
 # CSS (나중에 Utils.ui에 옮기기)
@@ -217,60 +222,107 @@ def get_combined_metrics(metrics_data, cutoffs_data, k_percent):
 # ==============================================================================
 MODEL_INVENTORY = load_model_inventory()
 
+# 제목
+st.markdown(
+    """
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;800&display=swap');
+    
+    .dashboard-header {
+        position: relative;
+        padding: 2.5rem 0 2rem 0;
+        background: white;
+        border-bottom: 1px solid #e5e7eb;
+        margin-bottom: 2rem;
+    }
+    
+    .header-content {
+        position: relative;
+        z-index: 1;
+    }
+    
+    .main-title {
+        font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+        font-weight: 800;
+        font-size: 2.5rem;
+        background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin: 0;
+        letter-spacing: -0.5px;
+        animation: fadeInUp 0.6s ease-out;
+    }
+    
+    .subtitle {
+        font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+        font-size: 1.1rem;
+        color: #6b7280;
+        margin: 0.75rem 0 0 0;
+        font-weight: 500;
+        letter-spacing: -0.2px;
+        animation: fadeInUp 0.6s ease-out 0.1s both;
+    }
+    
+    .accent-line {
+        width: 60px;
+        height: 4px;
+        background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+        border-radius: 2px;
+        margin-top: 1rem;
+        animation: fadeInUp 0.6s ease-out 0.2s both;
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+<div class="dashboard-header">
+    <div class="header-content">
+        <h1 class="main-title">Top-K 구간별 모델 성능 비교</h1>
+        <p class="subtitle">Top-K(상위 N%) 구간별 모델 성능 정밀 비교 대시보드</p>
+        <div class="accent-line"></div>
+    </div>
+</div>
+""",
+    unsafe_allow_html=True,
+)
+
 # st.markdown("""
 # <div style="padding-bottom: 0px;">
 #     <h1 style="
 #         font-family: 'Helvetica Neue', sans-serif;
-#         font-weight: 800;
+#         font-weight: 900;
 #         font-size: 3rem;
-#         background: linear-gradient(to right, #667eea, #764ba2);
+#         background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
 #         -webkit-background-clip: text;
 #         -webkit-text-fill-color: transparent;
 #         margin: 0;
 #         padding-bottom: 5px;
+#         padding-top: 10px;
 #     ">
-#         ⚖️ Model Performance Compare
+#         ⚡ Top-K 구간별 모델 성능 비교
 #     </h1>
 #     <p style="
 #         font-size: 1.1rem;
 #         color: #6c757d;
 #         margin: 0;
 #         font-weight: 500;
-#         padding-bottom: 1px;
+#         padding-bottom: 25px;
 #     ">
 #         Top-K(상위 N%) 구간별 모델 성능 정밀 비교 대시보드
 #     </p>
 # </div>
 # """, unsafe_allow_html=True)
 
-st.markdown("""
-<div style="padding-bottom: 0px;">
-    <h1 style="
-        font-family: 'Helvetica Neue', sans-serif;
-        font-weight: 900;
-        font-size: 3rem;
-        background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        margin: 0;
-        padding-bottom: 5px;
-        padding-top: 10px;
-    ">
-        ⚡ Top-K 구간별 모델 성능 비교
-    </h1>
-    <p style="
-        font-size: 1.1rem;
-        color: #6c757d;
-        margin: 0;
-        font-weight: 500;
-        padding-bottom: 25px;
-    ">
-        Top-K(상위 N%) 구간별 모델 성능 정밀 비교 대시보드
-    </p>
-</div>
-""", unsafe_allow_html=True)
-
-st.markdown("---")
+# st.markdown("---")
 
 select, divider, _, compare = st.columns([1.5, 0.1, 0.1, 6])
 

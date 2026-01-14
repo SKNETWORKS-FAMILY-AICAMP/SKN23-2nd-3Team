@@ -242,7 +242,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ===================== 메인 레이아웃 (원래 구조 유지) =====================
-st.markdown('<div class="main-title">⚡ E-commerce Churn Prediction</div>', unsafe_allow_html=True)
+st.markdown('<div class="main-title">E-commerce Churn Prediction</div>', unsafe_allow_html=True)
 main1, space1, main2, space2 = st.columns([1, 0.1, 1, 0.1])
 
 # ========== 왼쪽: 네비게이션 카드 ==========
@@ -311,7 +311,7 @@ with main1:
 with main2:
     # 헤더
     # st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown('<div class="dashboard-header">📦 Processing E-commerce Logs</div>', unsafe_allow_html=True)
+    st.markdown('<div class="dashboard-header">Processing E-commerce Logs</div>', unsafe_allow_html=True)
 
     # Progress Section
     progress_container = st.container()
@@ -381,7 +381,7 @@ with main2:
         progress_text.markdown(
             f"""
             <div style='text-align: center; font-size: 0.9rem; color: #1e40af; font-weight: 600;'>
-                📦 Processed <strong>{processed:,}</strong> / <strong>{TOTAL:,}</strong> logs
+                Processed <strong>{processed:,}</strong> / <strong>{TOTAL:,}</strong> logs
             </div>
             """,
             unsafe_allow_html=True
