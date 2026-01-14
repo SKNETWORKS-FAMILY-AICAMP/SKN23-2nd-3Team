@@ -1,0 +1,31 @@
+{
+  "model_id": "ml__lg",
+  "split": "test",
+  "base_rate": 0.86712,
+  "metrics_by_k": [
+    {
+      "k_pct": 5,
+      "precision_at_k": 0.96091,
+      "recall_at_k": 0.0554,
+      "lift_at_k": 1.10815
+    },
+    {
+      "k_pct": 10,
+      "precision_at_k": 0.95895,
+      "recall_at_k": 0.11058,
+      "lift_at_k": 1.10589
+    },
+    {
+      "k_pct": 15,
+      "precision_at_k": 0.95299,
+      "recall_at_k": 0.16484,
+      "lift_at_k": 1.09902
+    },
+    {
+      "k_pct": 30,
+      "precision_at_k": 0.94494,
+      "recall_at_k": 0.32691,
+      "lift_at_k": 1.08973
+    }
+  ]
+}
