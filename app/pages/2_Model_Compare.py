@@ -6,14 +6,11 @@ import os
 import json
 from pathlib import Path
 
-# ==============================================================================
-# 1. 페이지 설정 (반드시 코드 최상단)
-# ==============================================================================
+# 페이지 이름 부여
 st.set_page_config(page_title="Top-K 모델 성능 비교", page_icon="⚖️", layout="wide")
 
-# ==============================================================================
-# 2. 경로 자동 설정 로직
-# ==============================================================================
+
+# 폴더 경로 자동 설정
 current_file_path = Path(__file__).resolve()
 project_root = current_file_path.parent.parent.parent
 
@@ -34,9 +31,7 @@ if EVAL_ROOT is None:
     st.error("❌ 'eval' 폴더를 찾을 수 없습니다.")
     st.stop()
 
-# ==============================================================================
-# 3. 유틸 및 UI 불러오기
-# ==============================================================================
+# UI 불러오기 (utils 폴더)
 try:
     from utils.ui import apply_base_layout, hide_sidebar, top_nav, apply_tooltip_style, model_tooltip, model_ui
     apply_base_layout()    
@@ -51,9 +46,7 @@ except ImportError:
     def model_tooltip(name, color):
         return f"<span style='color:{color}'>{name}</span>"
 
-# ==============================================================================
-# 4. 스타일링 CSS (그림자 카드 + 정렬 수정 포함)
-# ==============================================================================
+# CSS (나중에 Utils.ui에 옮기기)
 st.markdown("""
 <style>
     .block-container { padding-top: 1rem !important; padding-bottom: 3rem; }
@@ -92,9 +85,7 @@ st.markdown("""
         font-size: 0.9rem;
     }
 
-    /* -----------------------------------------------------------------
-       🔥 컨테이너 스타일 (Shadow Card)
-       ----------------------------------------------------------------- */
+    /* 컨테이너 스타일 (Shadow Card) */
     [data-testid="stVerticalBlockBorderWrapper"] {
         border: 1px solid transparent !important;
         border-radius: 20px !important;
@@ -116,21 +107,18 @@ st.markdown("""
 # [설정] 모델 이름 매핑 (원래 이름 -> 보여줄 이름)
 CUSTOM_NAME_MAP = {
     # ML 모델 매핑
-    "lg": "로지스틱 회귀 (Logistic Regression)",
-    "hgb": "Histogram-based Gradient Boosting",
-    "lgbm": "LightGBM",
+    "Logistic Regression": "로지스틱 회귀 (Logistic Regression)",
+    "Histogram-based Gradient Boosting": "Histogram-based Gradient Boosting",
+    "LightGBM": "LightGBM",
     
     # DL 모델 매핑
-    "mlp_base": "다층 퍼셉트론 (DL1)",
-    "mlp_enhance": "다층 퍼셉트론 (DL2)",
-    "mlp_advanced": "다층 퍼셉트론 (DL3)"
+    "MLP_base": "다층 퍼셉트론 (DL1)",
+    "MLP_enhance": "다층 퍼셉트론 (DL2)",
+    "MLP_advanced": "다층 퍼셉트론 (DL3)"
 }
 
-# @st.cache_data
+# @st.cache_data # 주석처리 : hover + action 이름 부분 사용안됨
 def load_model_inventory():
-    """
-    model_card.json을 읽고, CUSTOM_NAME_MAP에 정의된 이름으로 변환하여 로드합니다.
-    """
     inventory = {"ML": {}, "DL": {}}
     
     if EVAL_ROOT and EVAL_ROOT.exists():
@@ -144,10 +132,10 @@ def load_model_inventory():
                         
                         category = card.get("category", "ML")
                         
-                        # 1. JSON에서 원래 display_name (또는 model_id) 가져오기
+                        # JSON에서 원래 display_name (또는 model_id) 가져오기
                         raw_name = card.get("display_name", card.get("model_id", folder.name))
                         
-                        # 2. 매핑 테이블 확인해서 이름 바꿔치기
+                        # 매핑 테이블 확인해서 이름 바꿔치기
                         final_name = CUSTOM_NAME_MAP.get(raw_name.strip(), raw_name)
                         
                         if category not in inventory: 
