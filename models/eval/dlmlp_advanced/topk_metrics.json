@@ -5,9 +5,9 @@
   "metrics_by_k": [
     {
       "k_pct": 5,
-      "precision_at_k": 0.96876,
-      "recall_at_k": 0.05585,
-      "lift_at_k": 1.11721
+      "precision_at_k": 0.96857,
+      "recall_at_k": 0.05584,
+      "lift_at_k": 1.11699
     },
     {
       "k_pct": 10,
@@ -17,15 +17,15 @@
     },
     {
       "k_pct": 15,
-      "precision_at_k": 0.96058,
-      "recall_at_k": 0.16615,
-      "lift_at_k": 1.10778
+      "precision_at_k": 0.95901,
+      "recall_at_k": 0.16588,
+      "lift_at_k": 1.10597
     },
     {
       "k_pct": 30,
-      "precision_at_k": 0.94736,
-      "recall_at_k": 0.32775,
-      "lift_at_k": 1.09253
+      "precision_at_k": 0.94733,
+      "recall_at_k": 0.32773,
+      "lift_at_k": 1.09249
     }
   ]
 }

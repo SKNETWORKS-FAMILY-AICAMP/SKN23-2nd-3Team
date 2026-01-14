@@ -1,5 +1,5 @@
 {
   "model_id": "dl__mlp_advanced",
   "split": "test",
-  "pr_auc": 0.93361
+  "pr_auc": 0.93345
 }

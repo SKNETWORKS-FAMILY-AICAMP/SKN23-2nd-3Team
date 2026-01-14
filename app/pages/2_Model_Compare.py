@@ -46,9 +46,30 @@ except ImportError:
     def model_tooltip(name, color):
         return f"<span style='color:{color}'>{name}</span>"
 
+# ============ 간격 조정 =============
+st.markdown("""
+<style>
+    .block-container { 
+        padding-top: 0.6rem !important;
+        padding-bottom: 3rem; 
+    }
+    h1 {
+        padding-top: 0rem !important;
+        margin-top: -2rem !important;
+    }
+    div[data-testid="stVerticalBlock"] {
+        gap: 0.5rem !important;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+# ==================================
+
+
 # CSS (나중에 Utils.ui에 옮기기)
 st.markdown("""
 <style>
+
     .block-container { padding-top: 1rem !important; padding-bottom: 3rem; }
     
     /* 헤더 스타일 */
@@ -100,18 +121,16 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# ==============================================================================
-# 5. 데이터 로드 및 이름 매핑
-# ==============================================================================
+# =============== 데이터 로드 및 이름 매핑 ===============
 
-# [설정] 모델 이름 매핑 (원래 이름 -> 보여줄 이름)
+# 모델 이름 매핑 (원래 이름(display_name) -> 보여줄 이름)
 CUSTOM_NAME_MAP = {
-    # ML 모델 매핑
-    "Logistic Regression": "로지스틱 회귀 (Logistic Regression)",
-    "Histogram-based Gradient Boosting": "Histogram-based Gradient Boosting",
+    # ML 모델 매핑 (model_card.json/display_name)
+    "Logistic Regression": "Logistic Regression",
+    "HistGradientBoosting": "HistGradientBoosting",
     "LightGBM": "LightGBM",
     
-    # DL 모델 매핑
+    # DL 모델 매핑 (model_card.json/display_name)
     "MLP_base": "다층 퍼셉트론 (DL1)",
     "MLP_enhance": "다층 퍼셉트론 (DL2)",
     "MLP_advanced": "다층 퍼셉트론 (DL3)"
@@ -141,7 +160,7 @@ def load_model_inventory():
                         if category not in inventory: 
                             inventory[category] = {}
                         
-                        # 3. [중요] 바뀐 이름을 키(Key), 실제 폴더명을 값(Value)으로 저장
+                        # 바뀐 이름을 키(Key), 실제 폴더명을 값(Value)으로 저장
                         inventory[category][final_name] = folder.name
                         
                     except:
@@ -165,17 +184,14 @@ def load_topk_cutoffs(folder_name):
     return None
 
 def get_combined_metrics(metrics_data, cutoffs_data, k_percent):
-    """
-    [핵심 수정] k_percent(정수 5)와 json의 k_pct(실수 0.05 or 정수 5)를
-    유연하게 비교하여 값을 찾아냅니다.
-    """
+
     p, r, l, c = 0.0, 0.0, 0.0, 0.0
     
     # 비교를 위해 실수형(0.05)과 정수형(5) 값을 미리 준비
     k_float = k_percent / 100.0  # 0.05
     k_int = k_percent            # 5
 
-    # 1. 지표 찾기
+    # 지표 찾기
     if metrics_data and "metrics_by_k" in metrics_data:
         for item in metrics_data["metrics_by_k"]:
             val = item.get("k_pct")
@@ -186,7 +202,7 @@ def get_combined_metrics(metrics_data, cutoffs_data, k_percent):
                 l = item.get("lift_at_k", 0)
                 break
                 
-    # 2. 컷오프 찾기
+    # cutoff(임계값) 찾기
     if cutoffs_data and "cutoffs_by_k" in cutoffs_data:
         for item in cutoffs_data["cutoffs_by_k"]:
             val = item.get("k_pct")
@@ -201,36 +217,64 @@ def get_combined_metrics(metrics_data, cutoffs_data, k_percent):
 # ==============================================================================
 MODEL_INVENTORY = load_model_inventory()
 
+# st.markdown("""
+# <div style="padding-bottom: 0px;">
+#     <h1 style="
+#         font-family: 'Helvetica Neue', sans-serif;
+#         font-weight: 800;
+#         font-size: 3rem;
+#         background: linear-gradient(to right, #667eea, #764ba2);
+#         -webkit-background-clip: text;
+#         -webkit-text-fill-color: transparent;
+#         margin: 0;
+#         padding-bottom: 5px;
+#     ">
+#         ⚖️ Model Performance Compare
+#     </h1>
+#     <p style="
+#         font-size: 1.1rem;
+#         color: #6c757d;
+#         margin: 0;
+#         font-weight: 500;
+#         padding-bottom: 1px;
+#     ">
+#         Top-K(상위 N%) 구간별 모델 성능 정밀 비교 대시보드
+#     </p>
+# </div>
+# """, unsafe_allow_html=True)
+
 st.markdown("""
 <div style="padding-bottom: 0px;">
     <h1 style="
         font-family: 'Helvetica Neue', sans-serif;
-        font-weight: 800;
+        font-weight: 900;
         font-size: 3rem;
-        background: linear-gradient(to right, #667eea, #764ba2);
+        background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         margin: 0;
         padding-bottom: 5px;
+        padding-top: 10px;
     ">
-        ⚖️ Model Performance Compare
+        ⚡ Top-K 구간별 모델 성능 비교
     </h1>
     <p style="
         font-size: 1.1rem;
         color: #6c757d;
         margin: 0;
         font-weight: 500;
-        padding-bottom: 1px;
+        padding-bottom: 25px;
     ">
         Top-K(상위 N%) 구간별 모델 성능 정밀 비교 대시보드
     </p>
 </div>
 """, unsafe_allow_html=True)
+
 st.markdown("---")
 
 select, divider, _, compare = st.columns([1.5, 0.1, 0.1, 6])
 
-# --- [왼쪽] 모델 선택 ---
+# 모델 선택 
 with select:
     st.markdown("##### 모델 선택")
     avail_cats = [cat for cat in MODEL_INVENTORY.keys() if MODEL_INVENTORY[cat]]
@@ -239,7 +283,7 @@ with select:
         st.info(f"참조 경로: {EVAL_ROOT}")
         st.stop()
 
-    # Model A
+    # 모델 A - st.selectbox 사용
     with st.container(border=True):
         st.markdown('<div style="color:#1f77b4; font-weight:bold;">🔵 Model A (Left)</div>', unsafe_allow_html=True)
         cat_a = st.radio(" ", avail_cats, key="cat_a", horizontal=True)
@@ -247,14 +291,14 @@ with select:
         name_a = st.selectbox("Select Model", options=list(models_a_map.keys()), key="model_a")
         folder_a = models_a_map[name_a] # 실제 폴더명
 
-    # Model B
+    # 모델 B - st.selectbox 사용
     with st.container(border=True):
         st.markdown('<div style="color:#d62728; font-weight:bold;">🔴 Model B (Right)</div>', unsafe_allow_html=True)
         default_idx = avail_cats.index("DL") if "DL" in avail_cats else 0
         cat_b = st.radio("  ", avail_cats, key="cat_b", horizontal=True, index=default_idx)
         models_b_map = MODEL_INVENTORY[cat_b]
         name_b = st.selectbox("Select Model", options=list(models_b_map.keys()), key="model_b")
-        folder_b = models_b_map[name_b] # 실제 폴더명
+        folder_b = models_b_map[name_b]
         
     st.markdown("</div>", unsafe_allow_html=True)
 
