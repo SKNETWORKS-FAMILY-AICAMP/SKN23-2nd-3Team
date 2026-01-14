@@ -10,27 +10,24 @@ hide_sidebar()
 top_nav()
 QnA_ui()
 
-# ===== 간격 조정 =====
+# ============ 간격 조정 =============
 st.markdown("""
 <style>
-    /* 1. 최상단 여백 제거 (네비바가 들어갈 공간 확보) */
     .block-container { 
-        padding-top: 0rem !important;
+        padding-top: 0.6rem !important;
         padding-bottom: 3rem; 
     }
-    
-    /* 2. [핵심] 타이틀(h1) 강제로 위로 끌어올리기 */
     h1 {
         padding-top: 0rem !important;
-        margin-top: -2rem !important; /* 이 값을 조절해서 간격을 맞추세요 (-2rem ~ -4rem 추천) */
+        margin-top: -2rem !important;
     }
-
-    /* 3. 네비게이션 바와 본문 사이의 쓸데없는 간격 제거 */
     div[data-testid="stVerticalBlock"] {
-        gap: 0.9rem !important;
+        gap: 0.5rem !important;
     }
 </style>
 """, unsafe_allow_html=True)
+
+# ==================================
 
 # ======= Hero Section =======
 st.markdown("""
