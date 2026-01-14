@@ -28,7 +28,7 @@ for path in path_candidates:
         break
 
 if EVAL_ROOT is None:
-    st.error("❌ 'eval' 폴더를 찾을 수 없습니다.")
+    st.error(" 'eval' 폴더를 찾을 수 없습니다.")
     st.stop()
 
 # UI 불러오기 (utils 폴더)
