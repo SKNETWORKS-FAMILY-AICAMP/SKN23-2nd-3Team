@@ -285,13 +285,16 @@ with main1:
             <div class="card-desc">결과 분석 리포트</div>
         </div>
         """, unsafe_allow_html=True)
-        r0, report1, report2, r1 = st.columns([0.1, 1, 1, 0.1])
+        r0, report1, r0, report2, r1 = st.columns([0.1, 1, 0.1, 1, 0.1])
         with report1:
             if st.button("Report", use_container_width=True, key="btn3"):
                 st.switch_page("pages/3_Report_Download.py")
+        with r0:
+            st.markdown("")
+
         with report2:
             if st.button("Predict", use_container_width=True, key="btn31"):
-                st.switch_page("pages/3_2_PREDICT.py")
+                st.switch_page("pages/4_Predict.py")
 
     with col4:
         st.markdown("""
@@ -302,7 +305,7 @@ with main1:
         </div>
         """, unsafe_allow_html=True)
         if st.button("Q&A", use_container_width=True, key="btn4"):
-            st.switch_page("pages/4_FAQ_QnA.py")
+            st.switch_page("pages/5_FAQ_QnA.py")
 
 # ========== 오른쪽: 대시보드 ==========
 with main2:

@@ -222,11 +222,11 @@ def top_nav():
         
         with menu_cols[5]:
             if st.button("Predict", key="nav_predict"):
-                st.switch_page("pages/3_2_PREDICT.py")
+                st.switch_page("pages/4_Predict.py")
          
         with menu_cols[6]:
             if st.button("Q&A", key="nav_qna"):
-                st.switch_page("pages/4_FAQ_QnA.py")
+                st.switch_page("pages/5_FAQ_QnA.py")
     
     st.markdown('</div>', unsafe_allow_html=True)
 
