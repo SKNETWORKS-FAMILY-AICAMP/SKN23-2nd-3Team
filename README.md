@@ -307,7 +307,7 @@
   - Top-K 타겟팅과 연결 : val Recall@Top5%가 최대인 설정/epoch를 best로 선택(동률이면 PR-AUC)  
     >  base는 “구조는 고정/단순”, 학습 세팅만 가볍게 튜닝한 모델.
 
-  ### enhance(BatchNorm + Dropout)
+  ### Enhance(BatchNorm + Dropout)
   - 학습 안정성 / 과적합 방지 
   → “학습은 잘 되지만, 일반화(과적합) 리스크가 상대적으로 높을 수 있는” 가장 기본형.
   - 사용이유 : 휴면 예측에서 이득이 있는지 기준선 확보 및 모델 복잡도 증가의 효과를 비교하기 위해 사용
