@@ -337,7 +337,7 @@ with select:
 
     # 모델 A - st.selectbox 사용
     with st.container(border=True):
-        st.markdown('<div style="color:#dd2e1f; font-weight:bold;">🔵 Model A (Left)</div>', unsafe_allow_html=True)
+        st.markdown('<div style="color:#1f77b4; font-weight:bold;">🔵 Model A (Left)</div>', unsafe_allow_html=True)
         cat_a = st.radio(" ", avail_cats, key="cat_a", horizontal=True)
         models_a_map = MODEL_INVENTORY[cat_a]
         name_a = st.selectbox("Select Model", options=list(models_a_map.keys()), key="model_a")
@@ -384,10 +384,10 @@ with compare:
 
             # 툴팁 처리
             try:
-                tooltip_a_cut = model_tooltip(name_a, color='#2563b')
+                tooltip_a_cut = model_tooltip(name_a, color='#1f77b4')
                 tooltip_b_cut = model_tooltip(name_b, color='#d62728')
             except:
-                tooltip_a_cut = f"<span style='color:#dd2e1f'>{name_a}</span>"
+                tooltip_a_cut = f"<span style='color:#1f77b4'>{name_a}</span>"
                 tooltip_b_cut = f"<span style='color:#d62728'>{name_b}</span>"
 
             st.markdown(f"""<div class='cutoff-info'>✂️ <b>Cutoff Score :</b> <span>🔵 {name_a} > <b>{cut_a:.3f}</b></span> &nbsp;|&nbsp; <span>🔴 {name_b} > <b>{cut_b:.3f}</b></span></div>""", unsafe_allow_html=True)
@@ -403,14 +403,16 @@ with compare:
     with col_left:
         with st.container(border=True):
             try:
-                display_a = model_tooltip(name_a, color='#2563cb')
+                display_a = model_tooltip(name_a, color='#1f77b4')
             except:
-                display_a = f"<span style='color:#dd2e1f'>{name_a}</span>"
+                display_a = f"<span style='color:#1f77b4'>{name_a}</span>"
 
             st.markdown(f"<div class='compare-header'><span style='font-size: 1.5rem;'>🔵</span>&nbsp;{display_a}</div>", unsafe_allow_html=True)
             
             st.info(f"Category: {cat_a}")
             
+
+
             if metrics_a:
                 st.write("") 
                 c1, c2, c3 = st.columns(3)
@@ -422,7 +424,7 @@ with compare:
                 fig_a = go.Figure(data=go.Scatterpolar(
                     r=[prec_a, rec_a, min(lift_a / 5, 1.0)], 
                     theta=['Precision', 'Recall', 'Lift/5'],
-                    fill='toself', name=name_a, line_color='#dd2e1f'
+                    fill='toself', name=name_a, line_color='#1f77b4'
                 ))
                 fig_a.update_layout(polar=dict(radialaxis=dict(visible=True, range=[0, 1])), showlegend=False, height=250, margin=dict(t=20, b=20, l=40, r=40))
                 st.plotly_chart(fig_a, use_container_width=True)
