@@ -245,7 +245,7 @@ st.markdown(
         font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
         font-weight: 800;
         font-size: 2.5rem;
-        background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+        background: linear-gradient(135deg, #dd2e1f 20%, #ffdff6 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -267,7 +267,7 @@ st.markdown(
     .accent-line {
         width: 60px;
         height: 4px;
-        background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+        background: linear-gradient(135deg, #dd2e1f 20%, #ffdff6 100%);
         border-radius: 2px;
         margin-top: 1rem;
         animation: fadeInUp 0.6s ease-out 0.2s both;
@@ -301,7 +301,7 @@ st.markdown(
 #         font-family: 'Helvetica Neue', sans-serif;
 #         font-weight: 900;
 #         font-size: 3rem;
-#         background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+#         background: linear-gradient(135deg, #dd2e1f 20%, #ffdff6 100%);
 #         -webkit-background-clip: text;
 #         -webkit-text-fill-color: transparent;
 #         margin: 0;
@@ -337,7 +337,7 @@ with select:
 
     # 모델 A - st.selectbox 사용
     with st.container(border=True):
-        st.markdown('<div style="color:#1f77b4; font-weight:bold;">🔵 Model A (Left)</div>', unsafe_allow_html=True)
+        st.markdown('<div style="color:#dd2e1f; font-weight:bold;">🔵 Model A (Left)</div>', unsafe_allow_html=True)
         cat_a = st.radio(" ", avail_cats, key="cat_a", horizontal=True)
         models_a_map = MODEL_INVENTORY[cat_a]
         name_a = st.selectbox("Select Model", options=list(models_a_map.keys()), key="model_a")
@@ -371,7 +371,7 @@ with compare:
     
     # 🔥 border=True 유지 (그림자 CSS 적용됨)
     with st.container(border=True):
-        st.markdown("### Target Audience & ROI Simulation")
+        st.markdown("### Target Audience")
         v, col_s1, col_s2 = st.columns([0.1 ,4, 1], gap="medium")
 
         with col_s1:
@@ -384,10 +384,10 @@ with compare:
 
             # 툴팁 처리
             try:
-                tooltip_a_cut = model_tooltip(name_a, color='#1f77b4')
+                tooltip_a_cut = model_tooltip(name_a, color='#2563b')
                 tooltip_b_cut = model_tooltip(name_b, color='#d62728')
             except:
-                tooltip_a_cut = f"<span style='color:#1f77b4'>{name_a}</span>"
+                tooltip_a_cut = f"<span style='color:#dd2e1f'>{name_a}</span>"
                 tooltip_b_cut = f"<span style='color:#d62728'>{name_b}</span>"
 
             st.markdown(f"""<div class='cutoff-info'>✂️ <b>Cutoff Score :</b> <span>🔵 {name_a} > <b>{cut_a:.3f}</b></span> &nbsp;|&nbsp; <span>🔴 {name_b} > <b>{cut_b:.3f}</b></span></div>""", unsafe_allow_html=True)
@@ -403,9 +403,9 @@ with compare:
     with col_left:
         with st.container(border=True):
             try:
-                display_a = model_tooltip(name_a, color='#1f77b4')
+                display_a = model_tooltip(name_a, color='#2563cb')
             except:
-                display_a = f"<span style='color:#1f77b4'>{name_a}</span>"
+                display_a = f"<span style='color:#dd2e1f'>{name_a}</span>"
 
             st.markdown(f"<div class='compare-header'><span style='font-size: 1.5rem;'>🔵</span>&nbsp;{display_a}</div>", unsafe_allow_html=True)
             
@@ -422,7 +422,7 @@ with compare:
                 fig_a = go.Figure(data=go.Scatterpolar(
                     r=[prec_a, rec_a, min(lift_a / 5, 1.0)], 
                     theta=['Precision', 'Recall', 'Lift/5'],
-                    fill='toself', name=name_a, line_color='#1f77b4'
+                    fill='toself', name=name_a, line_color='#dd2e1f'
                 ))
                 fig_a.update_layout(polar=dict(radialaxis=dict(visible=True, range=[0, 1])), showlegend=False, height=250, margin=dict(t=20, b=20, l=40, r=40))
                 st.plotly_chart(fig_a, use_container_width=True)

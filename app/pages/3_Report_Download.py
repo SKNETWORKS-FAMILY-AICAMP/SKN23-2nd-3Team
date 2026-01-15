@@ -60,7 +60,7 @@ st.markdown(
     .report-title  {
         font-size: 3rem;
         font-weight: 900;
-        background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+        background: linear-gradient(135deg, #dd2e1f 20%, #ffdff6 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         margin-bottom: 30px;
@@ -514,7 +514,7 @@ if "editor_key" not in st.session_state:
 #         font-family: 'Helvetica Neue', sans-serif;
 #         font-weight: 900;
 #         font-size: 3rem;
-#         background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+#         background: linear-gradient(135deg, #dd2e1f 20%, #ffdff6 100%);
 #         -webkit-background-clip: text;
 #         -webkit-text-fill-color: transparent;
 #         margin: 0;
@@ -560,7 +560,7 @@ st.markdown(
         font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
         font-weight: 800;
         font-size: 2.5rem;
-        background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+        background: linear-gradient(135deg, #dd2e1f 20%, #ffdff6 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -582,7 +582,7 @@ st.markdown(
     .accent-line {
         width: 60px;
         height: 4px;
-        background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+        background: linear-gradient(135deg, #dd2e1f 20%, #ffdff6 100%);
         border-radius: 2px;
         margin-top: 1rem;
         animation: fadeInUp 0.6s ease-out 0.2s both;
