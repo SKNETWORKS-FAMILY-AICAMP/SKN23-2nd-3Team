@@ -1,0 +1,7 @@
+{
+  "model_id": "dl__mlp_advanced",
+  "display_name": "MLP_advanced",
+  "category": "DL",
+  "split": "test",
+  "version": "baseline"
+}

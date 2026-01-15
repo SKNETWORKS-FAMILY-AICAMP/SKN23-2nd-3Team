@@ -1,0 +1,31 @@
+{
+  "model_id": "ml__lgbm",
+  "split": "test",
+  "base_rate": 0.86712,
+  "metrics_by_k": [
+    {
+      "k_pct": 5,
+      "precision_at_k": 0.96719,
+      "recall_at_k": 0.05576,
+      "lift_at_k": 1.1154
+    },
+    {
+      "k_pct": 10,
+      "precision_at_k": 0.96366,
+      "recall_at_k": 0.11112,
+      "lift_at_k": 1.11133
+    },
+    {
+      "k_pct": 15,
+      "precision_at_k": 0.96025,
+      "recall_at_k": 0.1661,
+      "lift_at_k": 1.1074
+    },
+    {
+      "k_pct": 30,
+      "precision_at_k": 0.94749,
+      "recall_at_k": 0.32779,
+      "lift_at_k": 1.09268
+    }
+  ]
+}

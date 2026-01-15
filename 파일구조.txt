@@ -1,0 +1,69 @@
+SKN23-2nd-3Team/
+│
+├── app/
+│   ├── Home.py
+│   ├── pages/
+│   │   └── *.py
+│   └── utils/
+│       ├── __init__.py
+│       ├── paths.py
+│       ├── save.py
+│       ├── load_model.py
+│       ├── load_metrics.py
+│       ├── plotting.py
+│       └── ui.py
+│
+├── assets/
+│   ├── eda/
+│   │   └── *.py
+│   ├── training/
+│   │   └── *.png
+│   └── ui/
+│       └── *.py
+│
+├── data/
+│   ├── raw/
+│   │   └── *.parquet
+│   └── processed/
+│       └── *.parquet
+│
+├── models/
+│   ├── model_definitions.py
+│   │
+│   ├── ml/
+│   │   └── *.pkl
+│   │
+│   ├── dl/
+│   │   └── *.pt
+│   │
+│   ├── preprocessing/
+│   │   └── *_scaler.pkl
+│   │
+│   ├── configs/
+│   │   └── *.json
+│   │
+│   └── eval/
+│       └── <model_id>/
+│           ├── model_card.json
+│           ├── pr_metrics.json
+│           ├── topk_metrics.json
+│           └── topk_cutoffs.json
+│
+├── notebooks/
+│   ├── dl/
+│   │   └── *.ipynb
+│   └── ml/
+│       └── *.ipynb
+│
+├── reports/
+│   ├── preprocessing/
+│   │   └── *.json
+│   ├── training/
+│   │   └── *.md
+│   └── insights/
+│       └── *.md
+│
+├── README.md
+├── requirements.txt
+├── .gitignore
+└── 파일구조.txt

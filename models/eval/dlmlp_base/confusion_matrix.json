@@ -1,0 +1,19 @@
+{
+  "model_id": "dl__mlp_base",
+  "split": "test",
+  "threshold": 0.93033,
+  "labels": [
+    "non_m2",
+    "m2"
+  ],
+  "matrix": [
+    [
+      13363,
+      168
+    ],
+    [
+      83379,
+      4923
+    ]
+  ]
+}

@@ -134,6 +134,8 @@ venv.bak/
 churn_venv/
 .streamlit/
 
+
+*venv*
 # Spyder project settings
 .spyderproject
 .spyproject
@@ -191,10 +193,9 @@ pip-selfcheck.json
 *.parquet
 *.csv
 *.tsv
-*.joblib
-*.pkl
-*.pt
-*.pth
-*.onnx
+*.DS_Store
+.DS_Store
 
-# End of https://www.toptal.com/developers/gitignore/api/python,venv
+
+# End of https://www.toptal.com/developers/gitignore/api/python,venv.DS_Store
+.DS_Store

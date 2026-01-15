@@ -1,0 +1,5 @@
+{
+  "model_id": "ml__hgb",
+  "split": "test",
+  "pr_auc": 0.93318
+}

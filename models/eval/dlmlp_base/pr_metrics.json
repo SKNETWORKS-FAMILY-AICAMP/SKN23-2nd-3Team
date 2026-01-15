@@ -1,0 +1,5 @@
+{
+  "model_id": "dl__mlp_base",
+  "split": "test",
+  "pr_auc": 0.93263
+}

@@ -1,0 +1,7 @@
+{
+  "model_id": "dl__mlp_enhance",
+  "display_name": "MLP_enhance",
+  "category": "DL",
+  "split": "test",
+  "version": "baseline"
+}

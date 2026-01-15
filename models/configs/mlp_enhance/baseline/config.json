@@ -1,0 +1,6 @@
+{
+  "model_name": "mlp_enhance",
+  "model_type": "dl",
+  "version": "baseline",
+  "feature_source": "features_ml_clean.parquet"
+}

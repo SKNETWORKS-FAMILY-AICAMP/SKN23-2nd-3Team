@@ -1,0 +1,31 @@
+{
+  "model_id": "dl__mlp_base",
+  "split": "test",
+  "base_rate": 0.86712,
+  "metrics_by_k": [
+    {
+      "k_pct": 5,
+      "precision_at_k": 0.967,
+      "recall_at_k": 0.05575,
+      "lift_at_k": 1.11517
+    },
+    {
+      "k_pct": 10,
+      "precision_at_k": 0.96238,
+      "recall_at_k": 0.11098,
+      "lift_at_k": 1.10986
+    },
+    {
+      "k_pct": 15,
+      "precision_at_k": 0.95927,
+      "recall_at_k": 0.16593,
+      "lift_at_k": 1.10627
+    },
+    {
+      "k_pct": 30,
+      "precision_at_k": 0.94716,
+      "recall_at_k": 0.32768,
+      "lift_at_k": 1.0923
+    }
+  ]
+}

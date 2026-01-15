@@ -1,0 +1,7 @@
+{
+  "model_id": "ml__hgb",
+  "display_name": "HistGradientBoosting",
+  "category": "ML",
+  "split": "test",
+  "version": "v2_weighted"
+}   
