@@ -687,7 +687,7 @@ with col_right:
     if pct_label: sub.append(pct_label)
     sub_txt = " | ".join(sub) if sub else "데이터를 입력하고 예측 버튼을 눌러주세요"
 
-    display_prob = (prob - 0.01) * 100 if is_analyzed else 0.0
+    display_prob = (prob - 0.005) * 100 if is_analyzed else 0.0
     if display_prob < 0: display_prob = 0.0
 
     st.markdown(f"""
