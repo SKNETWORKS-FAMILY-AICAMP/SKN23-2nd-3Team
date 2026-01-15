@@ -59,7 +59,7 @@ st.markdown("""
 #         font-family: 'Helvetica Neue', sans-serif;
 #         font-weight: 900;
 #         font-size: 3rem;
-#         background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+#         background: linear-gradient(135deg, #dd2e1f 20%, #ffdff6 100%);
 #         -webkit-background-clip: text;
 #         -webkit-text-fill-color: transparent;
 #         margin: 0;
@@ -103,7 +103,7 @@ st.markdown(
         font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
         font-weight: 800;
         font-size: 2.5rem;
-        background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+        background: linear-gradient(135deg, #dd2e1f 20%, #ffdff6 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -125,7 +125,7 @@ st.markdown(
     .accent-line {
         width: 60px;
         height: 4px;
-        background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+        background: linear-gradient(135deg, #dd2e1f 20%, #ffdff6 100%);
         border-radius: 2px;
         margin-top: 1rem;
         animation: fadeInUp 0.6s ease-out 0.2s both;
@@ -312,7 +312,7 @@ def render_faq(category_name, faqs):
     st.markdown(f"""
     <div style="margin-top: 30px; margin-bottom: 15px; display: flex; align-items: center;">
         <span style="font-size: 1.4rem; font-weight: 800; color: #1f2937;">{category_name}</span>
-        <span class="category-badge">{len(faqs)} Q&A</span>
+        <span class="category-badge">{len(faqs)} 개</span>
     </div>
     """, unsafe_allow_html=True)
     

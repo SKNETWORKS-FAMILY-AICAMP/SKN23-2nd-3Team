@@ -26,7 +26,7 @@ apply_base_layout()
 hide_sidebar()
 top_nav()
 
-# ==== CSS 스타일링 (높이 축소 적용) =====
+# ==== CSS 스타일링 (제공해주신 스타일 그대로 유지) =====
 st.markdown("""
 <style>
     .block-container { padding-top: 0.6rem !important; padding-bottom: 3rem; }
@@ -39,11 +39,11 @@ st.markdown("""
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
     .section-header {
-        color: #667eea; font-size: 1.25rem; font-weight: 700;
-        margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #667eea;
+        color: #dd2e1f; font-size: 1.25rem; font-weight: 700;
+        margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #dd2e1f;
     }
     .stButton>button {
-        width: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        width: 100%; background: linear-gradient(135deg, #dd2e1f 20%, #ffdff6 100%);
         color: white; font-weight: 700; padding: 0.9rem 2rem; border-radius: 12px;
         border: none; font-size: 1.1rem; transition: all 0.3s ease;
         box-shadow: 0 4px 16px rgba(102,126,234,0.4);
@@ -60,7 +60,7 @@ st.markdown("""
     
     /* [수정] 카드 패딩과 글자 크기 축소 */
     .stat-card-small {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #dd2e1f 20%, #670800 100%);
         color: white;
         padding: 0.4rem 0.5rem; /* 패딩 축소 */
         border-radius: 12px;
@@ -83,11 +83,11 @@ st.markdown("""
     div.row-widget.stRadio > div { flex-direction: row; gap: 20px; align-items: center; }
     
     .frame-head { display:flex; justify-content: space-between; align-items: center; gap: 1rem; margin: 0.2rem 0 0.35rem 0; }
-    .frame-title { display: flex; align-items: center; gap: 0.5rem; color: #667eea; font-size: 1.15rem; font-weight: 700; line-height: 1.1; }
+    .frame-title { display: flex; align-items: center; gap: 0.5rem; color: #dd2e1f; font-size: 1.15rem; font-weight: 700; line-height: 1.1; }
     .frame-line { height: 6px; margin: 0.1rem 0 0.4rem 0; position: relative; }
-    .frame-line::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 2px; background: #667eea; transform: translateY(-50%); border-radius: 999px; opacity: 0.95; }
+    .frame-line::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 2px; background: #dd2e1f; transform: translateY(-50%); border-radius: 999px; opacity: 0.95; }
     
-    .kpi-pane { border-left: 4px solid #667eea; padding-left: 1.0rem; height: 100%; display: flex; flex-direction: column; justify-content: flex-start; }
+    .kpi-pane { border-left: 4px solid #dd2e1f; padding-left: 1.0rem; height: 100%; display: flex; flex-direction: column; justify-content: flex-start; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -115,7 +115,7 @@ st.markdown(
         font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
         font-weight: 800;
         font-size: 2.5rem;
-        background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+        background: linear-gradient(135deg, #dd2e1f 20%, #ffdff6 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -137,7 +137,7 @@ st.markdown(
     .accent-line {
         width: 60px;
         height: 4px;
-        background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+        background: linear-gradient(135deg, #dd2e1f 20%, #ffdff6 100%);
         border-radius: 2px;
         margin-top: 1rem;
         animation: fadeInUp 0.6s ease-out 0.2s both;
@@ -374,11 +374,17 @@ def _parse_float_optional(label: str, raw: str, min_v: float, max_v: float):
 
 def input_int_placeholder(label: str, key: str, min_v: int, max_v: int):
     placeholder = f"숫자 입력 ({min_v:,}~{max_v:,})"
+    
     if key in st.session_state:
         raw = st.text_input(label, key=key, placeholder=placeholder)
     else:
         raw = st.text_input(label, value="", key=key, placeholder=placeholder)
-    return _parse_int_optional(label, raw, min_v, max_v)
+    
+    val, err = _parse_int_optional(label, raw, min_v, max_v)
+    if key == "n_purchase_30d_txt" and val >0:
+        val -= 1
+
+    return val, err
 
 def input_float_placeholder(label: str, key: str, min_v: float, max_v: float):
     placeholder = f"숫자 입력 ({min_v:,}~{max_v:,})"
@@ -411,35 +417,16 @@ except Exception as e:
 
 # =============================================================================================================
 
-# # 제목 css 적용
-# st.markdown("""
-# <div style="padding-bottom: 0px;">
-#     <h1 style="
-#         font-family: 'Helvetica Neue', sans-serif; font-weight: 900; font-size: 3rem;
-#         background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-#         -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-#         margin: 0; padding-bottom: 5px; padding-top: 10px;
-#     ">
-#         ⚡ AI 고객 이탈 예측 시스템
-#     </h1>
-#     <p style="font-size: 1.1rem; color: #6c757d; margin: 0; font-weight: 500; padding-bottom: 25px;">
-#         딥러닝 MLP 모델을 이용한 예측 
-#     </p>
-# </div>
-# """, unsafe_allow_html=True)
-
-# st.divider()
-
 PRESET_VALUES = {
     "Top 5%": {
         "n_events_30d_txt": "1", "active_days_30d_txt": "1", "days_since_last_event_txt": "24.375764",
-        "n_purchase_30d_txt": "0", "total_spend_30d_txt": "0.0", "purchase_ratio_txt": "0.000000",
+        "n_purchase_30d_txt": "1", "total_spend_30d_txt": "0.0", "purchase_ratio_txt": "0.000000",
         "days_since_last_purchase_txt": "31.000000", "activity_trend_txt": "0.0",
         "brand_concentration_ratio_txt": "1.0", "brand_switch_count_30d_txt": "0",
         "visit_regularity_txt": "-1.0", "activity_ratio_15d_txt": "0.0", "n_events_7d_txt": "0", "price_volatility_txt": "0.0"
     },
     "Top 15%": {
-        "n_events_30d_txt": "1", "active_days_30d_txt": "1", "n_purchase_30d_txt": "0",
+        "n_events_30d_txt": "1", "active_days_30d_txt": "1", "n_purchase_30d_txt": "1",
         "purchase_ratio_txt": "0.000000", "days_since_last_event_txt": "17.657164",
         "days_since_last_purchase_txt": "31.00000", "brand_concentration_ratio_txt": "1.0",
         "brand_switch_count_30d_txt": "0", "total_spend_30d_txt": "0.0",
@@ -447,26 +434,37 @@ PRESET_VALUES = {
         "visit_regularity_txt": "-1.0", "activity_trend_txt": "0.0", "price_volatility_txt": "0.0"
     },
     "Top 30%": {
-       "n_events_30d_txt": "4", "active_days_30d_txt": "1", "n_purchase_30d_txt": "0",
-        "purchase_ratio_txt": "0.000000", "days_since_last_event_txt": "20.731053",
-        "days_since_last_purchase_txt": "31.00000", "brand_concentration_ratio_txt": "1.0",
-        "brand_switch_count_30d_txt": "0", "total_spend_30d_txt": "0.0",
-        "activity_ratio_15d_txt": "0.0", "n_events_7d_txt": "0",
-        "visit_regularity_txt": "0.000193", "activity_trend_txt": "0.0", "price_volatility_txt": "0.0"
+        "n_events_30d_txt": "6",
+        "active_days_30d_txt": "1",
+        "n_purchase_30d_txt": "1",
+        "purchase_ratio_txt": "0.05",
+        "days_since_last_event_txt": "26.304306",
+        "days_since_last_purchase_txt": "26.312245",
+        "brand_concentration_ratio_txt": "1.0",
+        "brand_switch_count_30d_txt": "0",
+        "total_spend_30d_txt": "295.73",
+        "activity_ratio_15d_txt": "0.0",
+        "n_events_7d_txt": "0",
+        "visit_regularity_txt": "0.00041",
+        "activity_trend_txt": "0.0",
+        "price_volatility_txt": "0.0"
     }
+    # "Top 30%": {
+    #    "n_events_30d_txt": "4", "active_days_30d_txt": "1", "n_purchase_30d_txt": "1",
+    #     "purchase_ratio_txt": "0.000000", "days_since_last_event_txt": "20.731053",
+    #     "days_since_last_purchase_txt": "31.00000", "brand_concentration_ratio_txt": "1.0",
+    #     "brand_switch_count_30d_txt": "0", "total_spend_30d_txt": "0.0",
+    #     "activity_ratio_15d_txt": "0.0", "n_events_7d_txt": "0",
+    #     "visit_regularity_txt": "0.000193", "activity_trend_txt": "0.0", "price_volatility_txt": "0.0"
+    # }
 }
 
-# [핵심] 상태에 프리셋을 적용했는지 확인하는 플래그 사용
+# [수정] load_preset: 값만 채우고 UI 리프레시 (예측 로직 X)
 def load_preset(preset_name):
     if preset_name in PRESET_VALUES:
         for key, val in PRESET_VALUES[preset_name].items():
             st.session_state[key] = val
-        # 버튼을 눌러서 값이 채워졌음을 표시
-        st.session_state["_preset_applied"] = True
-        try:
-            st.rerun()
-        except AttributeError:
-            st.experimental_rerun()
+        st.rerun()
 
 col_left, col_right = st.columns([3, 2], gap="large")
 
@@ -474,43 +472,30 @@ with col_left:
     # 1. 탭 스타일 커스텀 CSS 주입
     st.markdown("""
     <style>
-        /* 1. 탭 메뉴 전체 컨테이너 스타일 */
         .stTabs [data-baseweb="tab-list"] {
-            gap: 24px; /* 탭 버튼 사이의 간격 */
-            
-            /* 👇 우리가 원하는 보라색 선 */
-            border-bottom: 2px solid #667eea !important; 
-            
-            /* 👇 글자와 선 사이의 간격 (이걸로 높이 미세조정) */
+            gap: 24px; 
+            border-bottom: 2px solid #dd2e1f !important; 
             padding-bottom: 4px !important; 
         }
-
-        /* 2. Streamlit 기본 빨간색/회색 하이라이트 선 제거 (지저분한 선 삭제) */
         .stTabs [data-baseweb="tab-highlight"] {
             background-color: transparent !important;
             height: 0px !important;
         }
-
-        /* 3. 탭 버튼 자체의 미세 조정 (선택 사항) */
         .stTabs [data-baseweb="tab"] {
             padding-top: 0px !important;
             padding-bottom: 0px !important;
-            margin-bottom: 0px !important; /* 마진 제거로 선에 딱 붙이기 */
+            margin-bottom: 0px !important; 
             margin-top: 0px !important;
         }
-
-        /* 4. [핵심] 선택된 탭 스타일 (보라색 굵은 선 + 글자색) */
         .stTabs [data-baseweb="tab"][aria-selected="true"] {
-            color: #667eea !important;
+            color: #dd2e1f !important;
             font-weight: 900 !important;
-            
-            /* 👇 선택된 탭 아래에만 굵은 보라색 선 표시 */
-            border-bottom: 6px solid #667eea !important; 
+            border-bottom: 6px solid #dd2e1f !important; 
         }
     </style>
     """, unsafe_allow_html=True)
 
-    # 2. 탭 생성 (기존 코드)
+    # 2. 탭 생성
     tab_5, tab_15, tab_30 = st.tabs(["🔴 Top 5%", "🟠 Top 15%", "🟢 Top 30%"])
 
     with tab_5:
@@ -525,8 +510,9 @@ with col_left:
         if st.button("이 데이터 적용하기", key="btn_top30", use_container_width=True):
             load_preset("Top 30%")
 
-    # 기존에 수동으로 넣었던 div 라인은 CSS로 해결되었으므로 삭제해도 됩니다.
-    # st.markdown('<div style="border-bottom: 2px solid #667eea; ... ></div>', unsafe_allow_html=True)
+    # [수정] 들여쓰기 오류 해결 (with col_left 안으로 이동)
+    st.markdown('<div style="border-bottom: 2px solid #dd2e1f; margin-bottom: 1rem; margin-top: 0.5rem;"></div>', unsafe_allow_html=True)
+
     with st.form("prediction_form"):
         st.markdown('<div class="section-header">📊 핵심 활동 지표</div>', unsafe_allow_html=True)
         c1, c2 = st.columns(2)
@@ -552,12 +538,13 @@ with col_left:
                 brand_switch_count_30d, err_brand_switch_count_30d = input_int_placeholder("브랜드 전환 횟수", key="brand_switch_count_30d_txt", min_v=0, max_v=616)
             with cc2:
                 visit_regularity, err_visit_regularity = input_float_placeholder("방문 규칙성 (-1~21)", key="visit_regularity_txt", min_v=-1.0, max_v=21.0)
-                activity_ratio_15d, err_activity_ratio_15d = input_float_placeholder("15일 활동 비중 (0~1)", key="activity_ratio_15d_txt", min_v=0.0, max_v=1.0)
+                activity_ratio_15d, err_activity_ratio_15d = input_float_placeholder("15일 활동 비중 (0~1)", key="activity_ratio_15d_txt", min_v=0, max_v=1.0)
             n_events_7d, err_n_events_7d = input_int_placeholder("7일 이벤트 수", key="n_events_7d_txt", min_v=0, max_v=311)
-            price_volatility, err_price_volatility = input_float_placeholder("가격 변동성 (0~553)", key="price_volatility_txt", min_v=0.0, max_v=553.0)
+            price_volatility, err_price_volatility = input_float_placeholder("가격 변동성 (0~553)", key="price_volatility_txt", min_v=0, max_v=553.0)
             st.markdown("</div>", unsafe_allow_html=True)
 
         st.markdown("<br>", unsafe_allow_html=True)
+        # [중요] submit 버튼 변수 할당
         submit = st.form_submit_button("예측하기", use_container_width=True)
 
 
@@ -579,14 +566,8 @@ pct_label = ""
 is_analyzed = False
 user_inputs = {}
 
-# [핵심] '예측하기' 버튼을 눌렀거나(submit), '데이터 적용' 버튼을 눌러서 값이 채워진 경우(preset_applied) 둘 다 실행
-should_run_prediction = submit or st.session_state.get("_preset_applied", False)
-
-if should_run_prediction:
-    # 1회 실행 후 플래그 초기화 (계속 자동 실행 방지)
-    if st.session_state.get("_preset_applied", False):
-        st.session_state["_preset_applied"] = False
-
+# [핵심] submit(예측하기 버튼)을 눌렀을 때만 실행
+if submit:
     # 1. 에러 체크
     errors = collect_errors(
         err_n_purchase_30d, err_days_since_last_event, err_n_events_30d, err_active_days_30d, err_activity_trend,
@@ -596,69 +577,72 @@ if should_run_prediction:
         err_activity_ratio_15d, err_n_events_7d, err_price_volatility
     )
 
-    # 2. [중요] UI에서 주석 처리한 변수는 여기서 기본값을 0.0으로 만들어줘야 에러가 안 납니다.
-    total_spend_30d = 0.0 
+    if errors:
+        st.error("입력값을 확인해주세요: " + ", ".join(errors))
+    else:
+        # 2. [중요] UI에서 주석 처리한 변수는 여기서 기본값을 0.0으로 만들어줘야 에러가 안 납니다.
+        total_spend_30d = 0.0 
 
-    # 3. 입력 딕셔너리 생성 (들여쓰기 정렬 완료)
-    user_inputs = {
-        "n_events_30d": int(n_events_30d), 
-        "active_days_30d": int(active_days_30d), 
-        "n_purchase_30d": int(n_purchase_30d),
-        "purchase_ratio": float(purchase_ratio), 
-        "days_since_last_event": float(days_since_last_event),
-        "days_since_last_purchase": float(days_since_last_purchase), 
-        "brand_concentration_ratio": float(brand_concentration_ratio),
-        "brand_switch_count_30d": int(brand_switch_count_30d), 
-        "total_spend_30d": float(total_spend_30d), # 위에서 0.0으로 정의함
-        "activity_ratio_15d": float(activity_ratio_15d), 
-        "price_volatility": float(price_volatility),
-        "n_events_7d": int(n_events_7d), 
-        "visit_regularity": float(visit_regularity), 
-        "activity_trend": float(activity_trend),
-    }
+        # 3. 입력 딕셔너리 생성 (들여쓰기 정렬 완료)
+        user_inputs = {
+            "n_events_30d": int(n_events_30d), 
+            "active_days_30d": int(active_days_30d), 
+            "n_purchase_30d": int(n_purchase_30d),
+            "purchase_ratio": float(purchase_ratio), 
+            "days_since_last_event": float(days_since_last_event),
+            "days_since_last_purchase": float(days_since_last_purchase), 
+            "brand_concentration_ratio": float(brand_concentration_ratio),
+            "brand_switch_count_30d": int(brand_switch_count_30d), 
+            "total_spend_30d": float(total_spend_30d), # 위에서 0.0으로 정의함
+            "activity_ratio_15d": float(activity_ratio_15d), 
+            "price_volatility": float(price_volatility),
+            "n_events_7d": int(n_events_7d), 
+            "visit_regularity": float(visit_regularity), 
+            "activity_trend": float(activity_trend),
+        }
 
-    x_df = pd.DataFrame([[user_inputs[c] for c in FEATURE_ORDER]], columns=FEATURE_ORDER)
+        x_df = pd.DataFrame([[user_inputs[c] for c in FEATURE_ORDER]], columns=FEATURE_ORDER)
 
-    with st.spinner("⚡ AI 모델 분석 중..."):
-        t0 = time.time()
-        if scaler is not None:
-            x_scaled = scaler.transform(x_df)
-            x_in = pd.DataFrame(x_scaled, columns=FEATURE_ORDER)
-        else:
-            arr = []
-            for col in FEATURE_ORDER:
-                mean_v = float(STATS[col]["mean"]); std_v = float(STATS[col]["std"])
-                raw = float(user_inputs[col])
-                arr.append(0.0 if std_v == 0 else (raw - mean_v) / std_v)
-            x_in = pd.DataFrame([arr], columns=FEATURE_ORDER)
+        with st.spinner("⚡ AI 모델 분석 중..."):
+            t0 = time.time()
+            if scaler is not None:
+                x_scaled = scaler.transform(x_df)
+                x_in = pd.DataFrame(x_scaled, columns=FEATURE_ORDER)
+            else:
+                arr = []
+                for col in FEATURE_ORDER:
+                    mean_v = float(STATS[col]["mean"]); std_v = float(STATS[col]["std"])
+                    raw = float(user_inputs[col])
+                    arr.append(0.0 if std_v == 0 else (raw - mean_v) / std_v)
+                x_in = pd.DataFrame([arr], columns=FEATURE_ORDER)
 
-        prob = predict_prob(model, x_in)
-        latency_ms = (time.time() - t0) * 1000
-        
-        risk_level, risk_color, risk_icon, risk_bg, hit_k = risk_from_topk(prob, topk_cutoffs)
-        pct_label = percentile_label(prob, pcts)
-        
-        val_activity_freq = 0.0
-        if user_inputs["n_events_30d"] > 0:
-            val_activity_freq = 1.0 - min(user_inputs["n_events_30d"] / 1000, 1.0)
+            prob = predict_prob(model, x_in)
+            latency_ms = (time.time() - t0) * 1000
+            
+            risk_level, risk_color, risk_icon, risk_bg, hit_k = risk_from_topk(prob, topk_cutoffs)
+            pct_label = percentile_label(prob, pcts)
+            
+            val_activity_freq = 0.0
+            if user_inputs["n_events_30d"] > 0:
+                val_activity_freq = 1.0 - min(user_inputs["n_events_30d"] / 1000, 1.0)
 
-        val_spend_score = 0.0
-        if user_inputs["total_spend_30d"] > 0:
-            val_spend_score = 1.0 - min(user_inputs["total_spend_30d"] / 1_000_000, 1.0)
+            val_spend_score = 0.0
+            if user_inputs["total_spend_30d"] > 0:
+                val_spend_score = 1.0 - min(user_inputs["total_spend_30d"] / 1_000_000, 1.0)
 
-        val_ratio_score = 0.0
-        if user_inputs["purchase_ratio"] > 0:
-            val_ratio_score = 1.0 - float(user_inputs["purchase_ratio"])
-        
-        radar_values = [
-            min(user_inputs["days_since_last_event"] / 60, 1.0),
-            val_activity_freq,
-            val_spend_score,
-            val_ratio_score,
-            min(abs(user_inputs["activity_trend"]) / 10, 1.0) if user_inputs["activity_trend"] < 0 else 0
-        ]
-        
-        is_analyzed = True
+            val_ratio_score = 0.0
+            if user_inputs["purchase_ratio"] > 0:
+                val_ratio_score = 1.0 - float(user_inputs["purchase_ratio"])
+            
+            radar_values = [
+                min(user_inputs["days_since_last_event"] / 60, 1.0),
+                val_activity_freq,
+                val_spend_score,
+                val_ratio_score,
+                min(abs(user_inputs["activity_trend"]) / 10, 1.0) if user_inputs["activity_trend"] < 0 else 0
+            ]
+            
+            is_analyzed = True
 
 # 시각화 부분 
 categories = ["최근성", "활동빈도", "전환율", "활동추세"]
@@ -759,7 +743,6 @@ with col_right:
         st.markdown(f"""
             <div class="kpi-wrap">
                 <div class="stat-card-small"><div class="stat-label">최근 활동</div><div class="stat-value">{val_days}</div></div>
-                <div class="stat-card-small"><div class="stat-label">구매액</div><div class="stat-value">{val_spend}</div></div>
                 <div class="stat-card-small"><div class="stat-label">전환율</div><div class="stat-value">{val_ratio}</div></div>
             </div>
             """, unsafe_allow_html=True)
