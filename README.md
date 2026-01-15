@@ -374,9 +374,9 @@
 
 > ### 가장 좋은 성능을 모델의 결과
 
-| **confusion matrix (Top 5%)** | **PR-AUC Curve** |
-| :--: | :--: |
-| <div align="center"><img src="assets/training/confusion_matrix_top5.png" alt="Confusion Matrix" width="100%"></div> | <div align="center"><img src="assets/training/PR-AUC.png" alt="PR-AUC Curve" width="100%"></div> |
+| **Confusion Matrix (Top 5%)** | **PR-AUC Curve** | **Lift / Precision@K** |
+| :--: | :--: | :--: |
+| <div align="center"><img src="assets/training/confusion_matrix_top5.png" alt="Confusion Matrix" width="100%"></div> | <div align="center"><img src="assets/training/PR-AUC.png" alt="PR-AUC Curve" width="100%"></div> | <div align="center"><img src="assets/training/lift_precision.png" alt="Lift / Precision@K" width="100%"></div> |
 
 
 
