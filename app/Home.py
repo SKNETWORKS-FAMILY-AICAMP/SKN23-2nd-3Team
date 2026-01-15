@@ -4,7 +4,7 @@ import plotly.graph_objects as go
 
 # ===================== 페이지 설정 (반드시 최상단) =====================
 st.set_page_config(
-    page_title="E-commerce Churn Prediction",
+    page_title="SKN23_2nd_3Team",
     layout="wide"
 )
 
