@@ -10,7 +10,7 @@
 | :-:  | :-:  | :-:  | :-:  | :-:  |
 | **정석원** | **김다빈** | **김지우** | **송주엽** | **신승훈** |
 | 팀장/PM/ML | 팀원/DL| 팀원/ML | 팀원/ML | 팀원/Dev  |
-| - 문제정의/라벨/스플릿 설계  <br> - 공통 평가 지표/리더보드 운영 <br>  ML 담당 <br> 발표| DL 파이프라인/학습 코드 <br> | 내용 | 내용 | 내용 |
+| - 문제정의/라벨/스플릿 설계  <br> - 공통 평가 지표/리더보드 운영 <br>  ML 담당 <br> 발표| - **DL(MLP) 파이프라인 구축** <br> - Ensemble 전략 구현 <br> - Optuna 최적화 담당 | 내용 | 내용 | 내용 |
 | <a href="https://github.com/jsrop07"><img src="https://img.shields.io/badge/GitHub-jsrop07-pink?logo=github"></a> | <a href="https://github.com/tree0317"><img src="https://img.shields.io/badge/GitHub-tree0317-red?logo=github"></a> | <a href="https://github.com/jooooww"><img src="https://img.shields.io/badge/GitHub-jooooww-blue?logo=github"></a> | <a href="https://github.com/JUYEOP024"><img src="https://img.shields.io/badge/GitHub-JUYEOP024-black?logo=github"></a> | <a href="https://github.com/seunghun92-lab"><img src="https://img.shields.io/badge/GitHub-seunghun92--lab-white?logo=github"></a> | 
 
 
@@ -473,7 +473,7 @@ Grid Search 방식의 비효율성으로 최적 모델 탐색에 한계가 있�
 | **이름** | **한 줄 회고** |
 | :-: | :-- |
 | 정석원 | TBD |
-| 김다빈 | TBD |
+| 김다빈 | **"From Oscillation to Stability"**: 초기 MLP 모델의 손실 함수 진동(Oscillation) 문제를 해결하기 위해, 단순 층 쌓기(Deep)보다는 넓은 구조(Wide)와 배치 정규화(Batch Norm)가 유효함을 실험으로 증명했습니다. 나아가 단일 모델의 한계를 5-Fold Ensemble로 극복하며, Top-5% 타겟팅 성능을 Baseline 대비 **1.5배** 향상시킨 점이 가장 인상 깊었습니다. |
 | 김지우 | TBD |
 | 송주엽 | TBD |
 | 신승훈 | TBD |
